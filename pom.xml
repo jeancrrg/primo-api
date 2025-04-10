@@ -8,11 +8,11 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.inved</groupId>
-	<artifactId>inved</artifactId>
-	<version>0.0.1</version>
-	<packaging>war</packaging>
-	<name>inved-api</name>
+	<groupId> com.primo </groupId>
+	<artifactId> primo </artifactId>
+	<version> 0.0.1 </version>
+	<packaging> war </packaging>
+	<name> primo-api </name>
 	<description> Sistema backend do aplicativo Primo </description>
 	<url/>
 	<licenses>
@@ -130,7 +130,7 @@
 
 				<configuration>
 					<configLocation>checkstyle.xml</configLocation>
-					<failOnViolation>true</failOnViolation> <!-- Falhar no build se houver violacoes -->
+					<failOnViolation>true</failOnViolation> <!-- Falha no build quando houver violacoes -->
 				</configuration>
 
 				<executions>

@@ -1,4 +1,4 @@
-package com.inved.exception;
+package com.primo.exception;
 
 public class InternalServerErrorException extends Exception {
 

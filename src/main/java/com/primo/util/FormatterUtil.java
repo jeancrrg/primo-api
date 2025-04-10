@@ -1,4 +1,4 @@
-package com.inved.util;
+package com.primo.util;
 
 import org.springframework.stereotype.Component;
 
