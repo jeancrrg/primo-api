@@ -1,4 +1,4 @@
-package com.primo.domain.cadastro.dto;
+package com.primo.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

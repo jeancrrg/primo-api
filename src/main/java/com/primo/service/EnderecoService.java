@@ -1,6 +1,6 @@
 package com.primo.service;
 
-import com.primo.domain.cadastro.dto.EnderecoDTO;
+import com.primo.domain.dto.EnderecoDTO;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 

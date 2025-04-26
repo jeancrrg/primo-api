@@ -1,4 +1,4 @@
-package com.primo.domain.cadastro;
+package com.primo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

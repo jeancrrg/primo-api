@@ -20,9 +20,9 @@ public class PrestadorServicoController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> buscar() {
+    public ResponseEntity<?> buscar(@RequestParam(required = false) String termoPesquisa) {
         try {
-            return ResponseEntity.ok(prestadorServicoService.buscar());
+            return ResponseEntity.ok(prestadorServicoService.buscar(termoPesquisa));
         } catch (Exception e) {
             loggerUtil.error("Erro ao buscar os prestadores de serviço!", e, this);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao buscar os prestadores de serviço!");

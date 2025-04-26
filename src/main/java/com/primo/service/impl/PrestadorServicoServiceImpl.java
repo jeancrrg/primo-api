@@ -1,6 +1,6 @@
 package com.primo.service.impl;
 
-import com.primo.domain.cadastro.dto.PrestadorServicoDTO;
+import com.primo.domain.dto.PrestadorServicoDTO;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.PrestadorServicoRepository;
@@ -24,8 +24,8 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         this.validationUtil = validationUtil;
     }
 
-    public List<PrestadorServicoDTO> buscar() throws BadRequestException, InternalServerErrorException {
-        List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar();
+    public List<PrestadorServicoDTO> buscar(String termoBusca) throws BadRequestException, InternalServerErrorException {
+        List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar(termoBusca);
         if (!validationUtil.isEmptyList(listaPrestadoresServico)) {
             for (PrestadorServicoDTO prestadorServicoDTO : listaPrestadoresServico) {
                 prestadorServicoDTO.setEndereco(enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo()));
