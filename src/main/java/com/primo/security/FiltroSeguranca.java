@@ -26,16 +26,20 @@ public class FiltroSeguranca extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = recuperarToken(request);
-        if (token != null) {
-            var login = tokenService.validarToken(token);
-            UserDetails userDetails = usuarioService.buscarPeloLogin(login);
-            var autenticacao = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            // Salva o usuário no contexto da autenticação
-            SecurityContextHolder.getContext().setAuthentication(autenticacao);
+        try {
+            var token = recuperarToken(request);
+            if (token != null) {
+                var login = tokenService.validarToken(token);
+                UserDetails userDetails = usuarioService.buscarPeloLogin(login);
+                var autenticacao = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                // Salva o usuário no contexto da autenticação
+                SecurityContextHolder.getContext().setAuthentication(autenticacao);
+            }
+            // Chama o próximo filtro pendente quando não houver token na API, para que dessa forma o Spring retorne 403
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao executar o filtro de seguranca! - " + e.getMessage());
         }
-        // Chama o próximo filtro pendente quando não houver token na API, para que dessa forma o Spring retorne 403
-        filterChain.doFilter(request, response);
     }
 
     private String recuperarToken(HttpServletRequest request) {

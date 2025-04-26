@@ -1,6 +1,8 @@
 package com.primo.service.impl;
 
+import com.primo.domain.Pessoa;
 import com.primo.domain.Usuario;
+import com.primo.domain.builder.UsuarioBuilder;
 import com.primo.domain.dto.AutenticacaoRequest;
 import com.primo.domain.dto.AutenticacaoResponse;
 import com.primo.domain.enums.PermissaoUsuario;
@@ -9,6 +11,7 @@ import com.primo.exception.InternalServerErrorException;
 import com.primo.security.SegurancaService;
 import com.primo.security.TokenService;
 import com.primo.service.AutenticacaoService;
+import com.primo.service.PessoaService;
 import com.primo.service.UsuarioService;
 import com.primo.util.ValidationUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,18 +23,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class AutenticacaoServiceImpl implements AutenticacaoService {
 
-    private final ValidationUtil validationUtil;
     private final AuthenticationManager authenticationManager;
-    private final UsuarioService usuarioService;
     private final SegurancaService segurancaService;
     private final TokenService tokenService;
+    private final ValidationUtil validationUtil;
+    private final PessoaService pessoaService;
+    private final UsuarioService usuarioService;
 
-    public AutenticacaoServiceImpl(ValidationUtil validationUtil, AuthenticationManager authenticationManager, UsuarioService usuarioService, SegurancaService segurancaService, TokenService tokenService) {
-        this.validationUtil = validationUtil;
+    public AutenticacaoServiceImpl(AuthenticationManager authenticationManager,
+                                   SegurancaService segurancaService,
+                                   TokenService tokenService,
+                                   ValidationUtil validationUtil,
+                                   PessoaService pessoaService,
+                                   UsuarioService usuarioService) {
         this.authenticationManager = authenticationManager;
-        this.usuarioService = usuarioService;
         this.segurancaService = segurancaService;
         this.tokenService = tokenService;
+        this.validationUtil = validationUtil;
+        this.pessoaService = pessoaService;
+        this.usuarioService = usuarioService;
     }
 
     public AutenticacaoResponse realizarLogin(AutenticacaoRequest autenticacaoRequest) throws BadRequestException {
@@ -49,17 +59,21 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
 
     public void cadastrar(AutenticacaoRequest autenticacaoRequest) throws BadRequestException, InternalServerErrorException {
         validarCamposAutenticacao(autenticacaoRequest);
+        if (usuarioService.verificarPossuiCadastro(autenticacaoRequest.login())) {
+            throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse usuário!");
+        }
         UserDetails userDetails = segurancaService.loadUserByUsername(autenticacaoRequest.login());
         if (userDetails != null) {
-            throw new BadRequestException("Não é possível cadastrar pois já possui o usuário cadastrado!");
+            throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse login!");
         }
-        String senhaCodificada = new BCryptPasswordEncoder().encode(autenticacaoRequest.senha());
-        Usuario usuario = new Usuario();
-        usuario.setCodigoPessoa(1L);
-        usuario.setEmail(autenticacaoRequest.login());
-        usuario.setSenha(senhaCodificada);
-        usuario.setPermissao(PermissaoUsuario.USUARIO);
-        usuario.setIndicadorAtivo(true);
+
+        Usuario usuario = UsuarioBuilder.builder()
+                .codigoPessoa(1L)
+                .email(autenticacaoRequest.login())
+                .senha(new BCryptPasswordEncoder().encode(autenticacaoRequest.senha()))
+                .permissao(PermissaoUsuario.USUARIO)
+                .indicadorAtivo(true)
+                .build();
         usuarioService.salvar(usuario);
     }
 

@@ -1,5 +1,6 @@
 package com.primo.security;
 
+import com.primo.exception.InternalServerErrorException;
 import com.primo.service.UsuarioService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +18,11 @@ public class SegurancaService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return usuarioService.buscarPeloLogin(login);
+        try {
+            return usuarioService.buscarPeloLogin(login);
+        } catch (InternalServerErrorException e) {
+            throw new RuntimeException("Erro ao carregar o usuário! - " + e.getMessage());
+        }
     }
 
 }

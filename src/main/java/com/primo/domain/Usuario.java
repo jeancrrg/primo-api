@@ -46,7 +46,7 @@ public class Usuario implements Serializable, UserDetails {
     private PermissaoUsuario permissao;
 
     @Column(name = "INDATV")
-    private boolean indicadorAtivo;
+    private Boolean indicadorAtivo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

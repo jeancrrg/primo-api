@@ -7,7 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface UsuarioService {
 
-    UserDetails buscarPeloLogin(String email);
+    UserDetails buscarPeloLogin(String email) throws BadRequestException, InternalServerErrorException;
+
+    boolean verificarPossuiCadastro(String email) throws BadRequestException, InternalServerErrorException;
 
     Usuario salvar(Usuario usuario) throws BadRequestException, InternalServerErrorException;
 
