@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
  * @author Jean Garcia
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

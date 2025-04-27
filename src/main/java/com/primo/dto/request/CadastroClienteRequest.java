@@ -9,6 +9,6 @@ package com.primo.dto.request;
  * @param modeloVeiculo
  * @param anoVeiculo
  */
-public record CadastroClienteRequest(String nome, String telefone, String email, String senha, String modeloVeiculo, int anoVeiculo) {
+public record CadastroClienteRequest(String nome, String telefone, String email, String senha, String modeloVeiculo, Integer anoVeiculo) {
 
 }

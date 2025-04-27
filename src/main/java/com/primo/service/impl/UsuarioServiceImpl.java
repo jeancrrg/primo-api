@@ -1,6 +1,9 @@
 package com.primo.service.impl;
 
 import com.primo.domain.cadastro.Usuario;
+import com.primo.domain.enums.PermissaoUsuario;
+import com.primo.exception.BadRequestException;
+import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.UsuarioRepository;
 import com.primo.service.UsuarioService;
 import com.primo.util.ValidationUtil;
@@ -18,27 +21,51 @@ public class UsuarioServiceImpl implements UsuarioService {
         this.validationUtil = validationUtil;
     }
 
-    public UserDetails buscarPeloLogin(String login) {
-        return usuarioRepository.findByLogin(login);
+    public UserDetails buscarPeloLogin(String login) throws BadRequestException, InternalServerErrorException {
+        try {
+            validationUtil.validarCampoVazio(login, "Login");
+            return usuarioRepository.findByLogin(login);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao buscar o usuário pelo login! - " + e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar o usuário pelo login: " + login + "! - " + e.getMessage());
+        }
     }
 
-    public boolean verificarPossuiCadastro(String email) {
-        validationUtil.validarCampoVazio(email, "email");
-        return usuarioRepository.existsByLogin(email);
+    public boolean verificarPossuiCadastroLogin(String login) throws BadRequestException, InternalServerErrorException {
+        try {
+            validationUtil.validarCampoVazio(login, "Login");
+            return usuarioRepository.existsByLogin(login);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao verificar se possui o cadastro do usuário pelo login! - " + e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao verificar se possui o cadastro do usuário pelo login: " + login + "! - " + e.getMessage());
+        }
     }
 
-    public Usuario salvar(Usuario usuario) {
-        validarCamposUsuario(usuario);
-        return usuarioRepository.save(usuario);
+    public Usuario salvar(Long codigoPessoa, String login, String senha, PermissaoUsuario permissaoUsuario) throws BadRequestException, InternalServerErrorException {
+        try {
+            validarCamposUsuario(codigoPessoa, login, senha, permissaoUsuario);
+            Usuario usuario = Usuario.builder()
+                    .codigoPessoa(codigoPessoa)
+                    .login(login)
+                    .senha(senha)
+                    .permissao(permissaoUsuario)
+                    .indicadorAtivo(true)
+                    .build();
+            return usuarioRepository.save(usuario);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de salvar o usuário! - " + e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao salvar o usuário com código pessoa: " + codigoPessoa + "! - " + e.getMessage());
+        }
     }
 
-    private void validarCamposUsuario(Usuario usuario) {
-        validationUtil.validarCampoVazio(usuario, "Usuário");
-        validationUtil.validarCampoVazio(usuario.getCodigoPessoa(), "Código da pessoa do usuário");
-        validationUtil.validarCampoVazio(usuario.getLogin(), "Email do usuário");
-        validationUtil.validarCampoVazio(usuario.getSenha(), "Senha do usuário");
-        validationUtil.validarCampoVazio(usuario.getPermissao(), "Permissão do usuário");
-        validationUtil.validarCampoVazio(usuario.getIndicadorAtivo(), "Indicador de ativo");
+    private void validarCamposUsuario(Long codigoPessoa, String login, String senha, PermissaoUsuario permissaoUsuario) throws BadRequestException {
+        validationUtil.validarCampoVazio(codigoPessoa, "Código da pessoa do usuário");
+        validationUtil.validarCampoVazio(login, "Login do usuário");
+        validationUtil.validarCampoVazio(senha, "Senha do usuário");
+        validationUtil.validarCampoVazio(permissaoUsuario, "Permissão do usuário");
     }
 
 }

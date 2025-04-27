@@ -6,6 +6,6 @@ import com.primo.exception.InternalServerErrorException;
 
 public interface PessoaService {
 
-    Pessoa salvar(Pessoa pessoa) throws BadRequestException, InternalServerErrorException;
+    Pessoa salvar(String nome, String telefone, String email) throws BadRequestException, InternalServerErrorException;
 
 }
