@@ -33,7 +33,8 @@ public class SegurancaConfig {
                 // Quais APIs são autorizadas
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticacao/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticacao/cadastro").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacao/cadastro/cliente").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacao/cadastro/prestador").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

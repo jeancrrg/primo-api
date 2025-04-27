@@ -3,8 +3,6 @@ package com.primo.domain.cadastro;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -15,10 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "TPTDSERVICO")
-public class PrestadorServico implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class PrestadorServico {
 
     @Id
     @Column(name = "CODPES")

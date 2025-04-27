@@ -1,4 +1,4 @@
 package com.primo.dto.request;
 
-public record CadastroPrestadorRequest(String login, String senha) {
+public record CadastroPrestadorRequest(String email, String senha) {
 }

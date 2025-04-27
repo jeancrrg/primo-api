@@ -1,6 +1,7 @@
 package com.primo.controller;
 
 import com.primo.service.TipoServicoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +18,10 @@ public class TipoServicoController {
         this.tipoServicoService = tipoServicoService;
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> buscar(@RequestParam(required = false) Integer codigo,
                                     @RequestParam(required = false) String descricao) {
-        return ResponseEntity.ok(tipoServicoService.buscar(codigo, descricao));
+        return ResponseEntity.status(HttpStatus.OK).body(tipoServicoService.buscar(codigo, descricao));
     }
 
 }

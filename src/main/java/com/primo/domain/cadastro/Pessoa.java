@@ -3,8 +3,6 @@ package com.primo.domain.cadastro;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,10 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "TPESSOA")
-public class Pessoa implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

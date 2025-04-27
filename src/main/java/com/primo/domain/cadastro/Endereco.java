@@ -14,10 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "TENDERECO")
-public class Endereco implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Endereco {
 
     @Id
     @Column(name = "CODPES")

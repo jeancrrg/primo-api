@@ -5,4 +5,5 @@ package com.primo.dto.response;
  * @param token
  */
 public record LoginResponse(String token) {
+
 }

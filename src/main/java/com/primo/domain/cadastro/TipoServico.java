@@ -3,8 +3,6 @@ package com.primo.domain.cadastro;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
-
 /**
  * @author Jean Garcia
  */
@@ -13,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "TTIPSERVICO")
-public class TipoServico implements Serializable {
+public class TipoServico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

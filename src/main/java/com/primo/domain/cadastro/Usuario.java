@@ -3,14 +3,13 @@ package com.primo.domain.cadastro;
 import com.primo.domain.enums.PermissaoUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,14 +17,12 @@ import java.util.List;
  * @author Jean Garcia
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "TUSUARIO")
-public class Usuario implements Serializable, UserDetails {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
