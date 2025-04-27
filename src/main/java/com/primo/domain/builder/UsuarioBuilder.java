@@ -1,6 +1,6 @@
 package com.primo.domain.builder;
 
-import com.primo.domain.Usuario;
+import com.primo.domain.cadastro.Usuario;
 import com.primo.domain.enums.PermissaoUsuario;
 
 /**

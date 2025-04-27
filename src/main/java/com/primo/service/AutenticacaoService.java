@@ -1,14 +1,15 @@
 package com.primo.service;
 
-import com.primo.domain.dto.AutenticacaoRequest;
-import com.primo.domain.dto.AutenticacaoResponse;
+import com.primo.dto.request.CadastroPrestadorRequest;
+import com.primo.dto.request.LoginRequest;
+import com.primo.dto.response.LoginResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 
 public interface AutenticacaoService {
 
-    AutenticacaoResponse realizarLogin(AutenticacaoRequest loginDTO) throws BadRequestException;
+    LoginResponse realizarLogin(LoginRequest loginRequest);
 
-    void cadastrar(AutenticacaoRequest loginDTO) throws BadRequestException, InternalServerErrorException;
+    void realizarCadastroPrestador(CadastroPrestadorRequest cadastroPrestadorRequest) throws BadRequestException, InternalServerErrorException;
 
 }

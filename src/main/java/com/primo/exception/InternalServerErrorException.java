@@ -1,23 +1,21 @@
 package com.primo.exception;
 
-public class InternalServerErrorException extends Exception {
+import lombok.Getter;
 
-    public InternalServerErrorException() {}
+@Getter
+public class InternalServerErrorException extends RuntimeException {
 
-    public InternalServerErrorException(String message) {
-        super(message);
-    }
+    private final String mensagemErro;
+    private final String detalheErro;
+    private final String erro;
+    private final Object objetoErro;
 
-    public InternalServerErrorException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public InternalServerErrorException(Throwable cause) {
-        super(cause);
-    }
-
-    public InternalServerErrorException(Exception e) {
-        super(e);
+    public InternalServerErrorException(String mensagemErro, String detalheErro, String erro, Object objetoErro, Throwable cause) {
+        super(mensagemErro, cause);
+        this.mensagemErro = mensagemErro;
+        this.detalheErro = detalheErro;
+        this.erro = erro;
+        this.objetoErro = objetoErro;
     }
 
 }

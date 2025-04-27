@@ -1,6 +1,6 @@
 package com.primo.service.impl;
 
-import com.primo.domain.dto.EnderecoDTO;
+import com.primo.dto.EnderecoDTO;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.EnderecoRepository;
@@ -19,13 +19,13 @@ public class EnderecoServiceImpl implements EnderecoService {
     public EnderecoDTO buscarPeloCodigoPessoa(Long codigoPessoa) throws BadRequestException, InternalServerErrorException {
         try {
             if (codigoPessoa == null) {
-                throw new BadRequestException("Código não informado!");
+                throw new BadRequestException("Código não informado para buscar o endereço!");
             }
             return enderecoRepository.buscarPeloCodigoPessoa(codigoPessoa);
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao validar antes de buscar o endereço! - " + e.getMessage());
+            throw e;
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o endereço! - " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao buscar o endereço!", "Código pessoa: " + codigoPessoa, e.getMessage(), this, e);
         }
     }
 

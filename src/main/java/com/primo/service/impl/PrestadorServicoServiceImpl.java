@@ -1,8 +1,9 @@
 package com.primo.service.impl;
 
-import com.primo.domain.dto.PrestadorServicoDTO;
+import com.primo.dto.PrestadorServicoDTO;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
+import com.primo.exception.NotFoundException;
 import com.primo.repository.PrestadorServicoRepository;
 import com.primo.service.EnderecoService;
 import com.primo.service.PrestadorServicoService;
@@ -18,20 +19,37 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
     private final EnderecoService enderecoService;
     private final ValidationUtil validationUtil;
 
-    public PrestadorServicoServiceImpl(PrestadorServicoRepository prestadorServicoRepository, EnderecoService enderecoService, ValidationUtil validationUtil) {
+    public PrestadorServicoServiceImpl(PrestadorServicoRepository prestadorServicoRepository,
+                                       EnderecoService enderecoService,
+                                       ValidationUtil validationUtil) {
         this.prestadorServicoRepository = prestadorServicoRepository;
         this.enderecoService = enderecoService;
         this.validationUtil = validationUtil;
     }
 
-    public List<PrestadorServicoDTO> buscar(String termoBusca) throws BadRequestException, InternalServerErrorException {
-        List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar(termoBusca);
-        if (!validationUtil.isEmptyList(listaPrestadoresServico)) {
-            for (PrestadorServicoDTO prestadorServicoDTO : listaPrestadoresServico) {
-                prestadorServicoDTO.setEndereco(enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo()));
+    public List<PrestadorServicoDTO> buscar(String termoPesquisa) {
+        try {
+            List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar(termoPesquisa);
+            if (validationUtil.isEmptyList(listaPrestadoresServico)) {
+                throw new NotFoundException("Falha ao buscar os prestadores de serviço! Nenhum prestador de serviço encontrado!");
             }
+            for (PrestadorServicoDTO prestadorServicoDTO : listaPrestadoresServico) {
+                processarEnderecoPrestador(prestadorServicoDTO);
+            }
+            return listaPrestadoresServico;
+        } catch (BadRequestException | NotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar os prestadores de serviço!", "Termo pesquisa: " + termoPesquisa, e.getMessage(), this, e);
         }
-        return listaPrestadoresServico;
+    }
+
+    private void processarEnderecoPrestador(PrestadorServicoDTO prestadorServicoDTO) throws BadRequestException, NotFoundException, InternalServerErrorException {
+        final var endereco = enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo());
+        if (endereco == null) {
+            throw new NotFoundException("Falha ao processar o endereço do prestador de serviço: " + prestadorServicoDTO.getCodigo() + "! Endereço não encontrado!");
+        }
+        prestadorServicoDTO.setEndereco(endereco);
     }
 
 }

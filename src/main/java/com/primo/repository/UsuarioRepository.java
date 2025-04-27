@@ -1,6 +1,6 @@
 package com.primo.repository;
 
-import com.primo.domain.Usuario;
+import com.primo.domain.cadastro.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 

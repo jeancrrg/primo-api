@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggerUtil {
 
-    public void error(String mensagemErro, Exception excecao, Object objeto) {
-        final Class<?> classe = objeto.getClass();
+    public void error(String mensagemErro, String detalheErro, String erro, Object objetoErro) {
+        final Class<?> classe = objetoErro.getClass();
         final Logger logger = LoggerFactory.getLogger(classe);
-        final String nomeMetodo = Thread.currentThread().getStackTrace()[2].getMethodName();
-        logger.error("ERRO: {} - MÉTODO DO ERRO: {} - TIPO DO ERRO: {} - MENSAGEM DO ERRO: {}", mensagemErro, nomeMetodo, excecao.getClass().getSimpleName(), excecao.getMessage());
+        logger.error("[MENSAGEM ERRO]: {} - [DETALHE]: {} - [ERRO]: {}", mensagemErro, detalheErro, erro);
     }
 
 }

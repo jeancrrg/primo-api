@@ -1,4 +1,4 @@
-package com.primo.domain;
+package com.primo.domain.cadastro;
 
 import com.primo.domain.enums.PermissaoUsuario;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
 package com.primo.repository;
 
-import com.primo.domain.PrestadorServico;
-import com.primo.domain.dto.PrestadorServicoDTO;
+import com.primo.domain.cadastro.PrestadorServico;
+import com.primo.dto.PrestadorServicoDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface PrestadorServicoRepository extends JpaRepository<PrestadorServico, Long> {
 
-    @Query("SELECT new com.primo.domain.dto.PrestadorServicoDTO(pes.codigo, pes.nome, ptd.tipoServico.codigo, ptd.tipoServico.descricao, ptd.valorServico) " +
+    @Query("SELECT new com.primo.dto.PrestadorServicoDTO(pes.codigo, pes.nome, ptd.tipoServico.codigo, ptd.tipoServico.descricao, ptd.valorServico) " +
             " FROM PrestadorServico ptd, " +
             "      Pessoa pes " +
             "WHERE 1=1 " +
-            "  AND (:termoBusca IS NULL OR (pes.nome LIKE :termoBusca OR ptd.tipoServico.descricao LIKE :termoBusca)) " +
+            "  AND (:termoPesquisa IS NULL OR (pes.nome LIKE :termoPesquisa OR ptd.tipoServico.descricao LIKE :termoPesquisa)) " +
             "  AND ptd.codigoPessoa = pes.codigo ")
-    List<PrestadorServicoDTO> buscar(String termoBusca);
+    List<PrestadorServicoDTO> buscar(String termoPesquisa);
 
 }
