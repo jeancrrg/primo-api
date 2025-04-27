@@ -15,7 +15,7 @@ public class LoggerUtil {
 
     public void error(String mensagemErro, String detalheErro, String erro, Class<?> classe) {
         final Logger logger = LoggerFactory.getLogger(classe);
-        logger.error("[MENSAGEM ERRO]: {} - [DETALHE]: {} - [ERRO]: {}", mensagemErro, detalheErro, erro);
+        logger.error("[MENSAGEM ERRO]: {} - [TIPO ERRO]: {} - [DETALHE]: {} - [ERRO]: {}", mensagemErro, classe.getSimpleName(), detalheErro, erro);
     }
 
     public void error(String mensagemErro, Object objetoErro) {

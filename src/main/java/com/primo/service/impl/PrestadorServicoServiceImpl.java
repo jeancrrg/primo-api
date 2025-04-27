@@ -28,28 +28,20 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
     }
 
     public List<PrestadorServicoDTO> buscar(String termoPesquisa) {
-        //try {
+        try {
             List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar(termoPesquisa);
             if (validationUtil.isEmptyList(listaPrestadoresServico)) {
                 throw new NotFoundException("Falha ao buscar os prestadores de serviço! Nenhum prestador de serviço encontrado!", this);
             }
             for (PrestadorServicoDTO prestadorServicoDTO : listaPrestadoresServico) {
-                processarEnderecoPrestador(prestadorServicoDTO);
+                prestadorServicoDTO.setEndereco(enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo()));
             }
             return listaPrestadoresServico;
-//        } catch (BadRequestException | NotFoundException e) {
-//            throw e;
-//        } catch (Exception e) {
-//            throw new InternalServerErrorException("Erro ao buscar os prestadores de serviço!", "Termo pesquisa: " + termoPesquisa, e.getMessage(), this);
-//        }
-    }
-
-    private void processarEnderecoPrestador(PrestadorServicoDTO prestadorServicoDTO) throws BadRequestException, NotFoundException, InternalServerErrorException {
-        final var endereco = enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo());
-        if (endereco == null) {
-            throw new NotFoundException("Falha ao processar o endereço do prestador de serviço: " + prestadorServicoDTO.getCodigo() + "! Endereço não encontrado!", this);
+        } catch (BadRequestException | NotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar os prestadores de serviço!", "Termo pesquisa: " + termoPesquisa, e.getMessage(), this);
         }
-        prestadorServicoDTO.setEndereco(endereco);
     }
 
 }
