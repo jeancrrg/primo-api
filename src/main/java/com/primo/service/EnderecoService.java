@@ -8,4 +8,6 @@ public interface EnderecoService {
 
     EnderecoDTO buscarPeloCodigoPessoa(Long codigoPessoa) throws BadRequestException, InternalServerErrorException;
 
+    void salvar(Long codigoPessoa, String logradouro) throws BadRequestException, InternalServerErrorException;
+
 }

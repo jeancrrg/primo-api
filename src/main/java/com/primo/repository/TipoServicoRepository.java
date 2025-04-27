@@ -18,4 +18,6 @@ public interface TipoServicoRepository extends JpaRepository<TipoServico, Intege
             """)
     List<TipoServicoResponse> buscar(Integer codigo, String descricao);
 
+    TipoServico findByCodigo(Integer codigo);
+
 }

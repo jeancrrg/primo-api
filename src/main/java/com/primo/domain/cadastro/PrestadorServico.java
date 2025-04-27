@@ -9,6 +9,7 @@ import java.math.BigDecimal;
  * @author Jean Garcia
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

@@ -21,11 +21,12 @@ public class PessoaServiceImpl implements PessoaService {
         this.validationUtil = validationUtil;
     }
 
-    public Pessoa salvar(String nome, String telefone, String email) throws BadRequestException, InternalServerErrorException {
+    public Pessoa salvar(String nome, String cpfCnpj, String telefone, String email) throws BadRequestException, InternalServerErrorException {
         try {
-            validarAntesSalvarPessoa(nome, telefone, email);
+            validarCamposObrigatoriosPessoa(nome, telefone, email);
             final Pessoa pessoa = Pessoa.builder()
                     .nome(nome)
+                    .cpfCnpj(cpfCnpj)
                     .telefone(telefone)
                     .email(email)
                     .dataCadastro(LocalDateTime.now())
@@ -38,7 +39,7 @@ public class PessoaServiceImpl implements PessoaService {
         }
     }
 
-    private void validarAntesSalvarPessoa(String nome, String telefone, String email) throws BadRequestException {
+    private void validarCamposObrigatoriosPessoa(String nome, String telefone, String email) throws BadRequestException {
         validationUtil.validarCampoVazio(nome, "Nome da pessoa");
         validationUtil.validarCampoVazio(telefone, "Telefone da pessoa");
         validationUtil.validarCampoVazio(email, "email da pessoa");

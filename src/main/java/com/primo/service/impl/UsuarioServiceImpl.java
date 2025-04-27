@@ -32,12 +32,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
     }
 
-    public boolean verificarPossuiCadastroLogin(String login) throws BadRequestException, InternalServerErrorException {
+    public void validarPossuiCadastroLogin(String login) throws BadRequestException, InternalServerErrorException {
         try {
-            validationUtil.validarCampoVazio(login, "Login");
-            return usuarioRepository.existsByLogin(login);
+            if (login == null || login.isEmpty()) {
+                throw new BadRequestException("Falha ao verificar se possui o cadastro do usuário pelo login! Login não informado!");
+            }
+            if (usuarioRepository.existsByLogin(login)) {
+                throw new BadRequestException("Usuário com login: " + login + " já possui cadastro!");
+            }
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao verificar se possui o cadastro do usuário pelo login! - " + e.getMessage());
+            throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao verificar se possui o cadastro do usuário pelo login: " + login + "! - " + e.getMessage());
         }

@@ -1,6 +1,8 @@
 package com.primo.service.impl;
 
+import com.primo.domain.cadastro.TipoServico;
 import com.primo.dto.response.TipoServicoResponse;
+import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.exception.NotFoundException;
 import com.primo.repository.TipoServicoRepository;
@@ -32,6 +34,17 @@ public class TipoServicoServiceImpl implements TipoServicoService {
             throw e;
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar os tipos de serviço!", "Código: " + codigo + " Descrição: " + descricao, e.getMessage(), this);
+        }
+    }
+
+    public TipoServico buscarPeloCodigo(Integer codigo) throws BadRequestException, InternalServerErrorException {
+        try {
+            validationUtil.validarCampoVazio(codigo, "Código do tipo do serviço");
+            return tipoServicoRepository.findByCodigo(codigo);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao buscar o tipo de serviço pelo código! - " + e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar o tipo de serviço: " + codigo + "! - " + e.getMessage());
         }
     }
 

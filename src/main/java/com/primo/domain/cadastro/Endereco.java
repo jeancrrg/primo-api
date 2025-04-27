@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @author Jean Garcia
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

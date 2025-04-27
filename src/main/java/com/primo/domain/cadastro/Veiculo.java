@@ -2,6 +2,7 @@ package com.primo.domain.cadastro;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
  * @author Jean Garcia
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,6 +29,6 @@ public class Veiculo {
     private String modelo;
 
     @Column(name = "ANOVCL")
-    private int ano;
+    private Integer ano;
 
 }

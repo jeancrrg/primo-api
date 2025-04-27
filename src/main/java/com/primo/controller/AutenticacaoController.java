@@ -19,19 +19,19 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> realizarLogin(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(autenticacaoService.realizarLogin(loginRequest));
+    public ResponseEntity<?> realizarLogin(@RequestBody LoginRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(autenticacaoService.realizarLogin(request));
     }
 
     @PostMapping("/cadastro/cliente")
-    public ResponseEntity<?> realizarCadastroCliente(@RequestBody CadastroClienteRequest cadastroClienteRequest) {
-        autenticacaoService.realizarCadastroCliente(cadastroClienteRequest);
+    public ResponseEntity<?> realizarCadastroCliente(@RequestBody CadastroClienteRequest request) {
+        autenticacaoService.realizarCadastroCliente(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/cadastro/prestador")
-    public ResponseEntity<?> realizarCadastroPrestador(@RequestBody CadastroPrestadorRequest cadastroPrestadorRequest) {
-        autenticacaoService.realizarCadastroPrestador(cadastroPrestadorRequest);
+    public ResponseEntity<?> realizarCadastroPrestador(@RequestBody CadastroPrestadorRequest request) {
+        autenticacaoService.realizarCadastroPrestador(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -7,10 +7,10 @@ import com.primo.dto.response.LoginResponse;
 
 public interface AutenticacaoService {
 
-    LoginResponse realizarLogin(LoginRequest loginRequest);
+    LoginResponse realizarLogin(LoginRequest request);
 
-    void realizarCadastroCliente(CadastroClienteRequest cadastroClienteRequest);
+    void realizarCadastroCliente(CadastroClienteRequest request);
 
-    void realizarCadastroPrestador(CadastroPrestadorRequest cadastroPrestadorRequest);
+    void realizarCadastroPrestador(CadastroPrestadorRequest request);
 
 }
