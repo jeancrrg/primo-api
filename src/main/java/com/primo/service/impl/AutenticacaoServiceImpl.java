@@ -46,11 +46,11 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
 
     public void realizarCadastroPrestador(CadastroPrestadorRequest cadastroPrestadorRequest) throws BadRequestException, InternalServerErrorException {
         if (usuarioService.verificarPossuiCadastro(cadastroPrestadorRequest.login())) {
-            throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse usuário!");
+            throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse usuário!", this);
         }
         UserDetails userDetails = segurancaService.loadUserByUsername(cadastroPrestadorRequest.login());
         if (userDetails != null) {
-            throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse login!");
+            throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse login!", this);
         }
 
         Usuario usuario = UsuarioBuilder.builder()
