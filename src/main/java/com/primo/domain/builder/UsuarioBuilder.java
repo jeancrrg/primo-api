@@ -29,7 +29,7 @@ public class UsuarioBuilder {
     }
 
     public UsuarioBuilder email(String email) {
-        this.usuario.setEmail(email);
+        this.usuario.setLogin(email);
         return this;
     }
 

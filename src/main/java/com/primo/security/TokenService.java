@@ -23,7 +23,7 @@ public class TokenService {
             Algorithm algoritmo = Algorithm.HMAC256(secret);
             String token = JWT.create()
                             .withIssuer("primo-api")
-                            .withSubject(usuario.getEmail())
+                            .withSubject(usuario.getLogin())
                             .withExpiresAt(gerarTempoExpiracaoToken())
                             .sign(algoritmo);
             return token;

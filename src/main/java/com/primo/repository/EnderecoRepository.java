@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
-    @Query("SELECT new com.primo.dto.EnderecoDTO(edr.logradouro, edr.nomeBairro, edr.latitude, edr.longitude) " +
-            " FROM Endereco edr " +
-            "WHERE 1=1 " +
-            "  AND edr.codigoPessoa = :codigoPessoa ")
+    @Query("""
+            SELECT new com.primo.dto.EnderecoDTO(edr.logradouro, edr.nomeBairro, edr.latitude, edr.longitude)
+              FROM Endereco edr
+             WHERE 1=1
+               AND edr.codigoPessoa = :codigoPessoa
+            """)
     EnderecoDTO buscarPeloCodigoPessoa(Long codigoPessoa);
 
 }

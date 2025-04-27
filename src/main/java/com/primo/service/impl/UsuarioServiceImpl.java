@@ -18,14 +18,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         this.validationUtil = validationUtil;
     }
 
-    public UserDetails buscarPeloLogin(String email) {
-        validationUtil.validarCampoVazio(email, "email");
-        return usuarioRepository.findByEmail(email);
+    public UserDetails buscarPeloLogin(String login) {
+        return usuarioRepository.findByLogin(login);
     }
 
     public boolean verificarPossuiCadastro(String email) {
         validationUtil.validarCampoVazio(email, "email");
-        return usuarioRepository.existsByEmail(email);
+        return usuarioRepository.existsByLogin(email);
     }
 
     public Usuario salvar(Usuario usuario) {
@@ -36,7 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private void validarCamposUsuario(Usuario usuario) {
         validationUtil.validarCampoVazio(usuario, "Usuário");
         validationUtil.validarCampoVazio(usuario.getCodigoPessoa(), "Código da pessoa do usuário");
-        validationUtil.validarCampoVazio(usuario.getEmail(), "Email do usuário");
+        validationUtil.validarCampoVazio(usuario.getLogin(), "Email do usuário");
         validationUtil.validarCampoVazio(usuario.getSenha(), "Senha do usuário");
         validationUtil.validarCampoVazio(usuario.getPermissao(), "Permissão do usuário");
         validationUtil.validarCampoVazio(usuario.getIndicadorAtivo(), "Indicador de ativo");

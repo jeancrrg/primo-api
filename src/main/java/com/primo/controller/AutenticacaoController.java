@@ -22,7 +22,7 @@ public class AutenticacaoController {
         return ResponseEntity.ok(autenticacaoService.realizarLogin(loginRequest));
     }
 
-    @PostMapping("/cadastro/prestador")
+    @PostMapping("/cadastro")
     public ResponseEntity<?> realizarCadastroPrestador(@RequestBody @Valid CadastroPrestadorRequest cadastroPrestadorRequest) {
         autenticacaoService.realizarCadastroPrestador(cadastroPrestadorRequest);
         return ResponseEntity.ok().build();

@@ -35,8 +35,8 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name = "CODPES")
     private Long codigoPessoa;
 
-    @Column(name = "EMLUSR")
-    private String email;
+    @Column(name = "LGNUSR")
+    private String login;
 
     @Column(name = "SNHUSR")
     private String senha;
@@ -63,7 +63,7 @@ public class Usuario implements Serializable, UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override

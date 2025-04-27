@@ -36,7 +36,7 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
         this.usuarioService = usuarioService;
     }
 
-    public LoginResponse realizarLogin(LoginRequest loginRequest) throws BadRequestException {
+    public LoginResponse realizarLogin(LoginRequest loginRequest) {
         var usuarioSenha = new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.senha());
         var autenticacao = authenticationManager.authenticate(usuarioSenha);
         Usuario usuario = (Usuario) autenticacao.getPrincipal();
@@ -44,7 +44,7 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
         return new LoginResponse(token);
     }
 
-    public void realizarCadastroPrestador(CadastroPrestadorRequest cadastroPrestadorRequest) throws BadRequestException, InternalServerErrorException {
+    public void realizarCadastroPrestador(CadastroPrestadorRequest cadastroPrestadorRequest) {
         if (usuarioService.verificarPossuiCadastro(cadastroPrestadorRequest.login())) {
             throw new BadRequestException("Não é possível cadastrar pois já possui cadastro desse usuário!", this);
         }
