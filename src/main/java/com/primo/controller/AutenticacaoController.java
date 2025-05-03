@@ -24,14 +24,14 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/cadastro/cliente")
-    public ResponseEntity<?> realizarCadastroCliente(@RequestBody CadastroClienteRequest request) {
-        autenticacaoService.realizarCadastroCliente(request);
+    public ResponseEntity<?> cadastrarCliente(@RequestBody CadastroClienteRequest request) {
+        autenticacaoService.cadastrarCliente(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/cadastro/prestador")
-    public ResponseEntity<?> realizarCadastroPrestador(@RequestBody CadastroPrestadorRequest request) {
-        autenticacaoService.realizarCadastroPrestador(request);
+    public ResponseEntity<?> cadastrarPrestador(@RequestBody CadastroPrestadorRequest request) {
+        autenticacaoService.cadastrarPrestador(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -63,7 +63,7 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
     @Transactional
     public void cadastrar(CadastroPrestadorRequest request) {
         try {
-            validarAntesCadastrarPrestador(request);
+            validarCamposPrestador(request);
             final Pessoa pessoa = pessoaService.salvar(request.nome(), request.cnpj(), request.telefone(), request.email());
             final String senha = new BCryptPasswordEncoder().encode(request.senha());
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senha, PermissaoUsuario.USUARIO);
@@ -76,11 +76,6 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao realizar o cadastro do prestador de serviço!", "Nome: " + request.nome(), e.getMessage(), this);
         }
-    }
-
-    private void validarAntesCadastrarPrestador(CadastroPrestadorRequest request) throws BadRequestException, InternalServerErrorException {
-        validarCamposPrestador(request);
-        usuarioService.validarPossuiCadastroLogin(request.email());
     }
 
     private void validarCamposPrestador(CadastroPrestadorRequest request) throws BadRequestException {

@@ -36,22 +36,17 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public void cadastrar(CadastroClienteRequest request) {
         try {
-            validarAntesCadastrarCliente(request);
+            validarCamposCliente(request);
             final Pessoa pessoa = pessoaService.salvar(request.nome(), null, request.telefone(), request.email());
             final String senhaCriptografada = new BCryptPasswordEncoder().encode(request.senha());
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
             veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
-            clienteRepository.save(new Cliente(pessoa.getCodigo(), true));
+            clienteRepository.save(new Cliente(pessoa.getCodigo(), Boolean.TRUE));
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar ao cadastrar o cliente! - " + e.getMessage());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao realizar o cadastro do cliente!", "Nome: " + request.nome(), e.getMessage(), this);
         }
-    }
-
-    private void validarAntesCadastrarCliente(CadastroClienteRequest request) throws BadRequestException, InternalServerErrorException {
-        validarCamposCliente(request);
-        usuarioService.validarPossuiCadastroLogin(request.email());
     }
 
     private void validarCamposCliente(CadastroClienteRequest request) throws BadRequestException {

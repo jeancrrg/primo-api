@@ -1,7 +1,5 @@
 package com.primo.dto.request;
 
-import com.primo.domain.cadastro.TipoServico;
-
 import java.math.BigDecimal;
 
 /**

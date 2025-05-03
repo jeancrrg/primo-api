@@ -9,8 +9,8 @@ public interface AutenticacaoService {
 
     LoginResponse realizarLogin(LoginRequest request);
 
-    void realizarCadastroCliente(CadastroClienteRequest request);
+    void cadastrarCliente(CadastroClienteRequest request);
 
-    void realizarCadastroPrestador(CadastroPrestadorRequest request);
+    void cadastrarPrestador(CadastroPrestadorRequest request);
 
 }

@@ -42,11 +42,11 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
         }
     }
 
-    public void realizarCadastroCliente(CadastroClienteRequest request) {
+    public void cadastrarCliente(CadastroClienteRequest request) {
         clienteService.cadastrar(request);
     }
 
-    public void realizarCadastroPrestador(CadastroPrestadorRequest request) {
+    public void cadastrarPrestador(CadastroPrestadorRequest request) {
         prestadorServicoService.cadastrar(request);
     }
 

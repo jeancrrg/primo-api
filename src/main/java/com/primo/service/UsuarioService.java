@@ -10,8 +10,6 @@ public interface UsuarioService {
 
     UserDetails buscarPeloLogin(String login) throws BadRequestException, InternalServerErrorException;;
 
-    void validarPossuiCadastroLogin(String login) throws BadRequestException, InternalServerErrorException;
-
     Usuario salvar(Long codigoPessoa, String login, String senha, PermissaoUsuario permissaoUsuario) throws BadRequestException, InternalServerErrorException;
 
 }
