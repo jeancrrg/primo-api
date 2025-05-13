@@ -2,6 +2,7 @@ package com.primo.service;
 
 import com.primo.domain.cadastro.Usuario;
 import com.primo.domain.enums.PermissaoUsuario;
+import com.primo.dto.response.UsuarioClienteResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UsuarioService {
 
     UserDetails buscarPeloLogin(String login) throws BadRequestException, InternalServerErrorException;;
+
+    UsuarioClienteResponse buscarUsuarioCliente(Long codigoUsuario);
 
     Usuario salvar(Long codigoPessoa, String login, String senha, PermissaoUsuario permissaoUsuario) throws BadRequestException, InternalServerErrorException;
 

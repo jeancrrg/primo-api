@@ -32,9 +32,9 @@ public class SegurancaConfig {
                 .addFilterBefore(filtroSeguranca, UsernamePasswordAuthenticationFilter.class)
                 // Quais APIs são autorizadas
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/autenticacao/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticacao/cadastro/cliente").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticacao/cadastro/prestador").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacoes/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacoes/cadastro/cliente").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/autenticacoes/cadastro/prestador").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tipos-servico").permitAll()
                         .anyRequest().authenticated()
                 )
