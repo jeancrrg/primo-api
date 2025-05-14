@@ -11,6 +11,7 @@ import com.primo.exception.InternalServerErrorException;
 import com.primo.exception.NotFoundException;
 import com.primo.repository.PrestadorServicoRepository;
 import com.primo.service.*;
+import com.primo.util.FormatterUtil;
 import com.primo.util.ValidationUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,23 +29,29 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
     private final EnderecoService enderecoService;
     private final TipoServicoService tipoServicoService;
     private final ValidationUtil validationUtil;
+    private final FormatterUtil formatterUtil;
 
     public PrestadorServicoServiceImpl(PrestadorServicoRepository prestadorServicoRepository,
                                        PessoaService pessoaService,
                                        UsuarioService usuarioService,
                                        EnderecoService enderecoService,
                                        TipoServicoService tipoServicoService,
-                                       ValidationUtil validationUtil) {
+                                       ValidationUtil validationUtil,
+                                       FormatterUtil formatterUtil) {
         this.prestadorServicoRepository = prestadorServicoRepository;
         this.pessoaService = pessoaService;
         this.usuarioService = usuarioService;
         this.enderecoService = enderecoService;
         this.tipoServicoService = tipoServicoService;
         this.validationUtil = validationUtil;
+        this.formatterUtil = formatterUtil;
     }
 
     public List<PrestadorServicoDTO> buscar(String termoPesquisa) {
         try {
+            if (!validationUtil.isEmptyTexto(termoPesquisa)) {
+                termoPesquisa = formatterUtil.formatarTextoParaConsulta(termoPesquisa);
+            }
             List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar(termoPesquisa);
             if (validationUtil.isEmptyList(listaPrestadoresServico)) {
                 throw new NotFoundException("Falha ao buscar os prestadores de serviço! Nenhum prestador de serviço encontrado!", this);

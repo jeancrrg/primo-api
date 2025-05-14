@@ -39,6 +39,7 @@ public class EnderecoServiceImpl implements EnderecoService {
             final var endereco = Endereco.builder()
                     .codigoPessoa(codigoPessoa)
                     .logradouro(logradouro)
+                    .siglaEstado("MG")
                     .build();
             enderecoRepository.save(endereco);
         } catch (BadRequestException e) {

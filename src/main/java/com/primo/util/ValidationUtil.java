@@ -20,8 +20,12 @@ public class ValidationUtil {
         }
     }
 
-    public Boolean isEmptyList(List<?> lista) {
+    public boolean isEmptyList(List<?> lista) {
         return lista == null || lista.isEmpty();
+    }
+
+    public boolean isEmptyTexto(String texto) {
+        return texto == null || texto.isEmpty();
     }
 
 }
