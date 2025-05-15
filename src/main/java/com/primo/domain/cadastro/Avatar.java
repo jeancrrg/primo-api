@@ -12,17 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "TCLIENTE")
-public class Cliente {
+@Table(name = "TAVATAR")
+public class Avatar {
 
     @Id
-    @Column(name = "CODPES")
-    private Long codigoPessoa;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CODAVA")
-    private Integer codigoAvatar;
+    private Integer codigo;
 
-    @Column(name = "INDATV")
-    private Boolean indicadorAtivo;
+    @Column(name = "URLIMGAVA")
+    private String urlImagem;
 
 }

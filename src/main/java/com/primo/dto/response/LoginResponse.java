@@ -2,9 +2,9 @@ package com.primo.dto.response;
 
 /**
  * @author Jean Garcia
- * @param codigoUsuario
+ * @param codigoPessoa
  * @param token
  */
-public record LoginResponse(Long codigoUsuario, String token) {
+public record LoginResponse(Long codigoPessoa, String token) {
 
 }

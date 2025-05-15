@@ -3,6 +3,7 @@ package com.primo.controller;
 import com.primo.dto.request.CadastroClienteRequest;
 import com.primo.dto.request.CadastroPrestadorRequest;
 import com.primo.dto.request.LoginRequest;
+import com.primo.dto.response.LoginResponse;
 import com.primo.service.AutenticacaoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> realizarLogin(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> realizarLogin(@RequestBody LoginRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(autenticacaoService.realizarLogin(request));
     }
 

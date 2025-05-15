@@ -25,9 +25,9 @@ public class TipoServicoServiceImpl implements TipoServicoService {
 
     public List<TipoServicoResponse> buscar(Integer codigo, String descricao) {
         try {
-            final var listaTiposServicoResponse = tipoServicoRepository.buscar(codigo, descricao);
+            final List<TipoServicoResponse> listaTiposServicoResponse = tipoServicoRepository.buscar(codigo, descricao);
             if (validationUtil.isEmptyList(listaTiposServicoResponse)) {
-                throw new NotFoundException("Falha ao buscar os tipos de serviço! Nenhum tipo de serviço encontrado", this);
+                throw new NotFoundException("Nenhum tipo de serviço encontrado!", this);
             }
             return listaTiposServicoResponse;
         } catch (NotFoundException e) {

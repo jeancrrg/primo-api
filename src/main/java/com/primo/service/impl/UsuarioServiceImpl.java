@@ -2,7 +2,6 @@ package com.primo.service.impl;
 
 import com.primo.domain.cadastro.Usuario;
 import com.primo.domain.enums.PermissaoUsuario;
-import com.primo.dto.response.UsuarioClienteResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.UsuarioRepository;
@@ -30,17 +29,6 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new BadRequestException("Falha ao buscar o usuário pelo login! - " + e.getMessage());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar o usuário pelo login: " + login + "! - " + e.getMessage());
-        }
-    }
-
-    public UsuarioClienteResponse buscarUsuarioCliente(Long codigoUsuario) {
-        try {
-            validationUtil.validarCampoVazio(codigoUsuario, "Codigo do usuário");
-            return usuarioRepository.buscarUsuarioCliente(codigoUsuario);
-        } catch (BadRequestException e) {
-            throw new BadRequestException(e.getMessage(), this);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o usuário cliente!", "Código: " + codigoUsuario, e.getMessage(), this);
         }
     }
 

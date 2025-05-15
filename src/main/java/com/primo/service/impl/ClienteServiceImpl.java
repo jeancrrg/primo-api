@@ -2,8 +2,10 @@ package com.primo.service.impl;
 
 import com.primo.domain.cadastro.Cliente;
 import com.primo.domain.cadastro.Pessoa;
+import com.primo.domain.constant.Constantes;
 import com.primo.domain.enums.PermissaoUsuario;
 import com.primo.dto.request.CadastroClienteRequest;
+import com.primo.dto.response.ClienteResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.ClienteRepository;
@@ -33,6 +35,17 @@ public class ClienteServiceImpl implements ClienteService {
         this.validationUtil = validationUtil;
     }
 
+    public ClienteResponse buscar(Long codigoPessoa) {
+        try {
+            validationUtil.validarCampoVazio(codigoPessoa, "Código");
+            return clienteRepository.buscar(codigoPessoa);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage(), this);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar o cliente!", "Código: " + codigoPessoa, e.getMessage(), this);
+        }
+    }
+
     @Transactional
     public void cadastrar(CadastroClienteRequest request) {
         try {
@@ -41,7 +54,7 @@ public class ClienteServiceImpl implements ClienteService {
             final String senhaCriptografada = new BCryptPasswordEncoder().encode(request.senha());
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
             veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
-            clienteRepository.save(new Cliente(pessoa.getCodigo(), Boolean.TRUE));
+            clienteRepository.save(new Cliente(pessoa.getCodigo(), Constantes.CODIGO_AVATAR_PADRAO, Boolean.TRUE));
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar ao cadastrar o cliente! - " + e.getMessage());
         } catch (Exception e) {
@@ -60,6 +73,22 @@ public class ClienteServiceImpl implements ClienteService {
         if (request.anoVeiculo() <= 1000) {
             throw new BadRequestException("Ano do veículo inválido!");
         }
+    }
+
+    public void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar) {
+        try {
+            validarCamposAntesAtualizarAvatar(codigoPessoa, codigoAvatar);
+            clienteRepository.atualizarAvatar(codigoPessoa, codigoAvatar);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de atualizar o avatar do cliente! - " + e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao atualizar o avatar do cliente!", "Código: " + codigoPessoa + " Código do avatar: " + codigoAvatar, e.getMessage(), this);
+        }
+    }
+
+    private void validarCamposAntesAtualizarAvatar(Long codigoPessoa, Integer codigoAvatar) throws BadRequestException {
+        validationUtil.validarCampoVazio(codigoPessoa, "Código do cliente");
+        validationUtil.validarCampoVazio(codigoAvatar, "Código do avatar");
     }
 
 }

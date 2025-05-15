@@ -36,7 +36,7 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
             final var autenticacao = authenticationManager.authenticate(usuarioSenha);
             final Usuario usuario = (Usuario) autenticacao.getPrincipal();
             final var token = tokenService.gerarToken(usuario);
-            return new LoginResponse(usuario.getCodigoUsuario(), token);
+            return new LoginResponse(usuario.getCodigoPessoa(), token);
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao realizar o login!", "Login: " + request.login(), e.getMessage(), this);
         }

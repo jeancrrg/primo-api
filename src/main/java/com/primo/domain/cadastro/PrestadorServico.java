@@ -27,4 +27,10 @@ public class PrestadorServico {
     @Column(name = "VLRSRV")
     private BigDecimal valorServico;
 
+    @Column(name = "CODAVA")
+    private Integer codigoAvatar;
+
+    @Column(name = "INDATV")
+    private Boolean indicadorAtivo;
+
 }

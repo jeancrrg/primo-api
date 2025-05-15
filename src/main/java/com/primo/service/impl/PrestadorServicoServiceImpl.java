@@ -3,6 +3,7 @@ package com.primo.service.impl;
 import com.primo.domain.cadastro.Pessoa;
 import com.primo.domain.cadastro.PrestadorServico;
 import com.primo.domain.cadastro.TipoServico;
+import com.primo.domain.constant.Constantes;
 import com.primo.domain.enums.PermissaoUsuario;
 import com.primo.dto.PrestadorServicoDTO;
 import com.primo.dto.request.CadastroPrestadorRequest;
@@ -110,6 +111,8 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
                     .codigoPessoa(codigoPessoa)
                     .tipoServico(tipoServico)
                     .valorServico(valorServico)
+                    .codigoAvatar(Constantes.CODIGO_AVATAR_PADRAO)
+                    .indicadorAtivo(Boolean.TRUE)
                     .build();
             prestadorServicoRepository.save(prestadorServico);
         } catch (NotFoundException e) {
