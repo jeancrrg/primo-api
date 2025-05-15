@@ -6,6 +6,7 @@ import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.EnderecoRepository;
 import com.primo.service.EnderecoService;
+import com.primo.util.FormatterUtil;
 import com.primo.util.ValidationUtil;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
     private final ValidationUtil validationUtil;
+    private final FormatterUtil formatterUtil;
 
-    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, ValidationUtil validationUtil) {
+    public EnderecoServiceImpl(EnderecoRepository enderecoRepository, ValidationUtil validationUtil, FormatterUtil formatterUtil) {
         this.enderecoRepository = enderecoRepository;
         this.validationUtil = validationUtil;
+        this.formatterUtil = formatterUtil;
     }
 
     public EnderecoDTO buscarPeloCodigoPessoa(Long codigoPessoa) throws BadRequestException, InternalServerErrorException {
@@ -38,7 +41,8 @@ public class EnderecoServiceImpl implements EnderecoService {
             validarCamposObrigatoriosEndereco(codigoPessoa, logradouro);
             final var endereco = Endereco.builder()
                     .codigoPessoa(codigoPessoa)
-                    .logradouro(logradouro)
+                    .logradouro(formatterUtil.removerAcentos(logradouro).trim().toUpperCase())
+                    .nomeCidade("UBERLANDIA")
                     .siglaEstado("MG")
                     .build();
             enderecoRepository.save(endereco);

@@ -10,7 +10,7 @@ import java.util.List;
 public interface PrestadorServicoRepository extends JpaRepository<PrestadorServico, Long> {
 
     @Query("""
-            SELECT new com.primo.dto.PrestadorServicoDTO(pes.codigo, pes.nome, ptd.tipoServico.codigo, ptd.tipoServico.descricao, ptd.valorServico)
+            SELECT new com.primo.dto.PrestadorServicoDTO(pes.codigo, pes.nome, ptd.tipoServico.codigo, ptd.tipoServico.descricao, ptd.valorServico, ptd.codigoAvatar)
              FROM PrestadorServico ptd,
                   Pessoa pes
             WHERE 1=1

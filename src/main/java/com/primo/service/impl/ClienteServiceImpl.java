@@ -50,8 +50,8 @@ public class ClienteServiceImpl implements ClienteService {
     public void cadastrar(CadastroClienteRequest request) {
         try {
             validarCamposCliente(request);
-            final Pessoa pessoa = pessoaService.salvar(request.nome(), null, request.telefone(), request.email());
             final String senhaCriptografada = new BCryptPasswordEncoder().encode(request.senha());
+            final Pessoa pessoa = pessoaService.salvar(request.nome(), null, request.telefone(), request.email());
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
             veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
             clienteRepository.save(new Cliente(pessoa.getCodigo(), Constantes.CODIGO_AVATAR_PADRAO, Boolean.TRUE));

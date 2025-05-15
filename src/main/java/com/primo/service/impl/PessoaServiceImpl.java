@@ -5,6 +5,7 @@ import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.PessoaRepository;
 import com.primo.service.PessoaService;
+import com.primo.util.FormatterUtil;
 import com.primo.util.ValidationUtil;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,19 @@ public class PessoaServiceImpl implements PessoaService {
 
     private final PessoaRepository pessoaRepository;
     private final ValidationUtil validationUtil;
+    private final FormatterUtil formatterUtil;
 
-    public PessoaServiceImpl(PessoaRepository pessoaRepository, ValidationUtil validationUtil) {
+    public PessoaServiceImpl(PessoaRepository pessoaRepository, ValidationUtil validationUtil, FormatterUtil formatterUtil) {
         this.pessoaRepository = pessoaRepository;
         this.validationUtil = validationUtil;
+        this.formatterUtil = formatterUtil;
     }
 
     public Pessoa salvar(String nome, String cpfCnpj, String telefone, String email) throws BadRequestException, InternalServerErrorException {
         try {
             validarCamposObrigatoriosPessoa(nome, telefone, email);
             final Pessoa pessoa = Pessoa.builder()
-                    .nome(nome)
+                    .nome(formatterUtil.removerAcentos(nome).trim().toUpperCase())
                     .cpfCnpj(cpfCnpj)
                     .telefone(telefone)
                     .email(email)

@@ -5,6 +5,7 @@ import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.VeiculoRepository;
 import com.primo.service.VeiculoService;
+import com.primo.util.FormatterUtil;
 import com.primo.util.ValidationUtil;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,12 @@ public class VeiculoServiceImpl implements VeiculoService {
 
     private final VeiculoRepository veiculoRepository;
     private final ValidationUtil validationUtil;
+    private final FormatterUtil formatterUtil;
 
-    public VeiculoServiceImpl(VeiculoRepository veiculoRepository, ValidationUtil validationUtil) {
+    public VeiculoServiceImpl(VeiculoRepository veiculoRepository, ValidationUtil validationUtil, FormatterUtil formatterUtil) {
         this.veiculoRepository = veiculoRepository;
         this.validationUtil = validationUtil;
+        this.formatterUtil = formatterUtil;
     }
 
     public void salvar(Long codigoPessoa, String modeloVeiculo, Integer anoVeiculo) throws BadRequestException, InternalServerErrorException {
@@ -24,7 +27,7 @@ public class VeiculoServiceImpl implements VeiculoService {
             validarCamposVeiculo(codigoPessoa, modeloVeiculo, anoVeiculo);
             final Veiculo veiculo = Veiculo.builder()
                     .codigoPessoa(codigoPessoa)
-                    .modelo(modeloVeiculo)
+                    .modelo(formatterUtil.removerAcentos(modeloVeiculo).trim().toUpperCase())
                     .ano(anoVeiculo)
                     .build();
             veiculoRepository.save(veiculo);
