@@ -1,5 +1,6 @@
 package com.primo.domain.cadastro;
 
+import com.primo.domain.enums.TipoPessoa;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,5 +39,9 @@ public class Pessoa {
 
     @Column(name = "DATCAD")
     private LocalDateTime dataCadastro;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "TIPPES")
+    private TipoPessoa tipoPessoa;
 
 }

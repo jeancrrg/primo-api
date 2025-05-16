@@ -20,7 +20,7 @@ public interface PrestadorServicoRepository extends JpaRepository<PrestadorServi
                             FROM Endereco edr
                            WHERE 1=1
                              AND pes.codigo = edr.codigoPessoa)
-            """)
+    """)
     List<PrestadorServicoDTO> buscar(String termoPesquisa);
 
 }

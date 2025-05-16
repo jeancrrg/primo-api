@@ -5,6 +5,7 @@ import com.primo.domain.cadastro.PrestadorServico;
 import com.primo.domain.cadastro.TipoServico;
 import com.primo.domain.constant.Constantes;
 import com.primo.domain.enums.PermissaoUsuario;
+import com.primo.domain.enums.TipoPessoa;
 import com.primo.dto.PrestadorServicoDTO;
 import com.primo.dto.request.CadastroPrestadorRequest;
 import com.primo.exception.BadRequestException;
@@ -72,7 +73,7 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
     public void cadastrar(CadastroPrestadorRequest request) {
         try {
             validarCamposPrestador(request);
-            final Pessoa pessoa = pessoaService.salvar(request.nome(), request.cnpj(), request.telefone(), request.email());
+            final Pessoa pessoa = pessoaService.salvar(request.nome(), request.cnpj(), request.telefone(), request.email(), TipoPessoa.PRESTADOR);
             final String senha = new BCryptPasswordEncoder().encode(request.senha());
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senha, PermissaoUsuario.USUARIO);
             enderecoService.salvar(pessoa.getCodigo(), request.endereco());

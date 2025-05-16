@@ -4,6 +4,7 @@ import com.primo.domain.cadastro.Cliente;
 import com.primo.domain.cadastro.Pessoa;
 import com.primo.domain.constant.Constantes;
 import com.primo.domain.enums.PermissaoUsuario;
+import com.primo.domain.enums.TipoPessoa;
 import com.primo.dto.request.CadastroClienteRequest;
 import com.primo.dto.response.ClienteResponse;
 import com.primo.exception.BadRequestException;
@@ -51,7 +52,7 @@ public class ClienteServiceImpl implements ClienteService {
         try {
             validarCamposCliente(request);
             final String senhaCriptografada = new BCryptPasswordEncoder().encode(request.senha());
-            final Pessoa pessoa = pessoaService.salvar(request.nome(), null, request.telefone(), request.email());
+            final Pessoa pessoa = pessoaService.salvar(request.nome(), null, request.telefone(), request.email(), TipoPessoa.CLIENTE);
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
             veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
             clienteRepository.save(new Cliente(pessoa.getCodigo(), Constantes.CODIGO_AVATAR_PADRAO, Boolean.TRUE));

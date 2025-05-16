@@ -5,6 +5,7 @@ import com.primo.dto.request.CadastroClienteRequest;
 import com.primo.dto.request.CadastroPrestadorRequest;
 import com.primo.dto.request.LoginRequest;
 import com.primo.dto.response.LoginResponse;
+import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.security.TokenService;
 import com.primo.service.*;
@@ -19,15 +20,17 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
     private final TokenService tokenService;
     private final ClienteService clienteService;
     private final PrestadorServicoService prestadorServicoService;
+    private final PessoaService pessoaService;
 
     public AutenticacaoServiceImpl(AuthenticationManager authenticationManager,
                                    TokenService tokenService,
                                    ClienteService clienteService,
-                                   PrestadorServicoService prestadorServicoService) {
+                                   PrestadorServicoService prestadorServicoService, PessoaService pessoaService) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.clienteService = clienteService;
         this.prestadorServicoService = prestadorServicoService;
+        this.pessoaService = pessoaService;
     }
 
     public LoginResponse realizarLogin(LoginRequest request) {
@@ -36,7 +39,11 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
             final var autenticacao = authenticationManager.authenticate(usuarioSenha);
             final Usuario usuario = (Usuario) autenticacao.getPrincipal();
             final var token = tokenService.gerarToken(usuario);
-            return new LoginResponse(usuario.getCodigoPessoa(), token);
+            final var pessoa = pessoaService.buscarPeloCodigo(usuario.getCodigoPessoa());
+            if (pessoa == null) {
+                throw new BadRequestException("Pessoa não encontrada!");
+            }
+            return new LoginResponse(pessoa.getCodigo(), token, pessoa.getTipoPessoa());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao realizar o login!", "Login: " + request.login(), e.getMessage(), this);
         }
