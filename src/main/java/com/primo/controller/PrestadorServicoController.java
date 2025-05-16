@@ -23,4 +23,15 @@ public class PrestadorServicoController {
         return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscar(termoPesquisa));
     }
 
+    @GetMapping("/unico")
+    public ResponseEntity<PrestadorServicoDTO> buscarPeloCodigo(@RequestParam Long codigoPessoa) {
+        return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscarPeloCodigo(codigoPessoa));
+    }
+
+    @PutMapping("/avatar")
+    public ResponseEntity<?> atualizarAvatar(@RequestParam Long codigoPessoa, @RequestParam Integer codigoAvatar) {
+        prestadorServicoService.atualizarAvatar(codigoPessoa, codigoAvatar);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

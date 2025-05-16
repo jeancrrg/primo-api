@@ -56,16 +56,36 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
             }
             List<PrestadorServicoDTO> listaPrestadoresServico = prestadorServicoRepository.buscar(termoPesquisa);
             if (validationUtil.isEmptyList(listaPrestadoresServico)) {
-                throw new NotFoundException("Falha ao buscar os prestadores de serviço! Nenhum prestador de serviço encontrado!", this);
+                throw new NotFoundException("Nenhum prestador de serviço encontrado!", this);
             }
             for (PrestadorServicoDTO prestadorServicoDTO : listaPrestadoresServico) {
                 prestadorServicoDTO.setEndereco(enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo()));
             }
             return listaPrestadoresServico;
-        } catch (BadRequestException | NotFoundException e) {
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de buscar os prestadores de serviço! - " + e.getMessage(), this);
+        } catch (NotFoundException e) {
             throw e;
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar os prestadores de serviço!", "Termo pesquisa: " + termoPesquisa, e.getMessage(), this);
+        }
+    }
+
+    public PrestadorServicoDTO buscarPeloCodigo(Long codigoPessoa) {
+        try {
+            validationUtil.validarCampoVazio(codigoPessoa, "Código");
+            var prestadorServicoDTO = prestadorServicoRepository.buscarPeloCodigo(codigoPessoa);
+            if (prestadorServicoDTO == null) {
+                throw new NotFoundException("Nenhum prestador de serviço encontrado pelo código!", this);
+            }
+            prestadorServicoDTO.setEndereco(enderecoService.buscarPeloCodigoPessoa(prestadorServicoDTO.getCodigo()));
+            return prestadorServicoDTO;
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de buscar o prestador de serviço! - " + e.getMessage(), this);
+        } catch (NotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao buscar o prestador de serviço!", "Código: " + codigoPessoa, e.getMessage(), this);
         }
     }
 
@@ -123,6 +143,22 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao salvar o prestador de serviço com código de pessoa: " + codigoPessoa + "! - " + e.getMessage());
         }
+    }
+
+    public void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar) {
+        try {
+            validarCamposAntesAtualizarAvatar(codigoPessoa, codigoAvatar);
+            prestadorServicoRepository.atualizarAvatar(codigoPessoa, codigoAvatar);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de atualizar o avatar do prestador de serviço! - " + e.getMessage(), this);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao atualizar o avatar do prestador de serviço!", "Código: " + codigoPessoa + " Código do avatar: " + codigoAvatar, e.getMessage(), this);
+        }
+    }
+
+    private void validarCamposAntesAtualizarAvatar(Long codigoPessoa, Integer codigoAvatar) throws BadRequestException {
+        validationUtil.validarCampoVazio(codigoPessoa, "Código do prestador de serviço");
+        validationUtil.validarCampoVazio(codigoAvatar, "Código do avatar");
     }
 
 }

@@ -2,7 +2,7 @@ package com.primo.dto.response;
 
 /**
  * @author Jean Garcia
- * @param codigoPessoa
+ * @param codigo
  * @param nome
  * @param telefone
  * @param email
@@ -10,6 +10,6 @@ package com.primo.dto.response;
  * @param anoVeiculo
  * @param codigoAvatar
  */
-public record ClienteResponse(Long codigoPessoa, String nome, String telefone, String email, String modeloVeiculo, int anoVeiculo, Integer codigoAvatar) {
+public record ClienteResponse(Long codigo, String nome, String telefone, String email, String modeloVeiculo, int anoVeiculo, Integer codigoAvatar) {
 
 }

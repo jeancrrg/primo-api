@@ -21,15 +21,22 @@ public class PrestadorServicoDTO implements Serializable {
 
     private Long codigo;
     private String nome;
+    private String telefone;
+    private String email;
+    private String cnpj;
     private Integer codigoTipoServico;
     private String descricaoTipoServico;
     private BigDecimal valorServico;
     private Integer codigoAvatar;
     private EnderecoDTO endereco;
 
-    public PrestadorServicoDTO(Long codigo, String nome, Integer codigoTipoServico, String descricaoTipoServico, BigDecimal valorServico, Integer codigoAvatar) {
+    public PrestadorServicoDTO(Long codigo, String nome, String telefone, String email, String cnpj,
+                               Integer codigoTipoServico, String descricaoTipoServico, BigDecimal valorServico, Integer codigoAvatar) {
         this.codigo = codigo;
         this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.cnpj = cnpj;
         this.codigoTipoServico = codigoTipoServico;
         this.descricaoTipoServico = descricaoTipoServico;
         this.valorServico = valorServico;

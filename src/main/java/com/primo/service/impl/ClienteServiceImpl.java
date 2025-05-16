@@ -9,6 +9,7 @@ import com.primo.dto.request.CadastroClienteRequest;
 import com.primo.dto.response.ClienteResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
+import com.primo.exception.NotFoundException;
 import com.primo.repository.ClienteRepository;
 import com.primo.service.ClienteService;
 import com.primo.service.PessoaService;
@@ -28,7 +29,11 @@ public class ClienteServiceImpl implements ClienteService {
     private final VeiculoService veiculoService;
     private final ValidationUtil validationUtil;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, PessoaService pessoaService, UsuarioService usuarioService, VeiculoService veiculoService, ValidationUtil validationUtil) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository,
+                              PessoaService pessoaService,
+                              UsuarioService usuarioService,
+                              VeiculoService veiculoService,
+                              ValidationUtil validationUtil) {
         this.clienteRepository = clienteRepository;
         this.pessoaService = pessoaService;
         this.usuarioService = usuarioService;
@@ -39,9 +44,15 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteResponse buscar(Long codigoPessoa) {
         try {
             validationUtil.validarCampoVazio(codigoPessoa, "Código");
-            return clienteRepository.buscar(codigoPessoa);
+            ClienteResponse cliente = clienteRepository.buscar(codigoPessoa);
+            if (cliente == null) {
+                throw new NotFoundException("Nenhum cliente encontrado!", this);
+            }
+            return cliente;
         } catch (BadRequestException e) {
-            throw new BadRequestException(e.getMessage(), this);
+            throw new BadRequestException("Falha ao validar antes de buscar o cliente! - " + e.getMessage(), this);
+        } catch (NotFoundException e) {
+            throw e;
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar o cliente!", "Código: " + codigoPessoa, e.getMessage(), this);
         }
@@ -57,7 +68,7 @@ public class ClienteServiceImpl implements ClienteService {
             veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
             clienteRepository.save(new Cliente(pessoa.getCodigo(), Constantes.CODIGO_AVATAR_PADRAO, Boolean.TRUE));
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao validar ao cadastrar o cliente! - " + e.getMessage());
+            throw new BadRequestException("Falha ao validar ao cadastrar o cliente! - " + e.getMessage(), this);
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao realizar o cadastro do cliente!", "Nome: " + request.nome(), e.getMessage(), this);
         }
@@ -81,7 +92,7 @@ public class ClienteServiceImpl implements ClienteService {
             validarCamposAntesAtualizarAvatar(codigoPessoa, codigoAvatar);
             clienteRepository.atualizarAvatar(codigoPessoa, codigoAvatar);
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao validar antes de atualizar o avatar do cliente! - " + e.getMessage());
+            throw new BadRequestException("Falha ao validar antes de atualizar o avatar do cliente! - " + e.getMessage(), this);
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao atualizar o avatar do cliente!", "Código: " + codigoPessoa + " Código do avatar: " + codigoAvatar, e.getMessage(), this);
         }
