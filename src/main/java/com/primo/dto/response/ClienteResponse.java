@@ -6,10 +6,11 @@ package com.primo.dto.response;
  * @param nome
  * @param telefone
  * @param email
+ * @param cpf
  * @param modeloVeiculo
  * @param anoVeiculo
  * @param codigoAvatar
  */
-public record ClienteResponse(Long codigo, String nome, String telefone, String email, String modeloVeiculo, int anoVeiculo, Integer codigoAvatar) {
+public record ClienteResponse(Long codigo, String nome, String telefone, String email, String cpf, String modeloVeiculo, int anoVeiculo, Integer codigoAvatar) {
 
 }

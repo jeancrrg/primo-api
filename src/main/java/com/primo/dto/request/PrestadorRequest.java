@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @param codigoTipoServico
  * @param valorServico
  */
-public record CadastroPrestadorRequest(String nome, String telefone, String email, String senha,
-                                       String cnpj, String endereco, Integer codigoTipoServico, BigDecimal valorServico) {
+public record PrestadorRequest(String nome, String telefone, String email, String senha,
+                               String cnpj, String endereco, Integer codigoTipoServico, BigDecimal valorServico) {
 
 }

@@ -1,8 +1,6 @@
 package com.primo.service.impl;
 
 import com.primo.domain.cadastro.Usuario;
-import com.primo.dto.request.CadastroClienteRequest;
-import com.primo.dto.request.CadastroPrestadorRequest;
 import com.primo.dto.request.LoginRequest;
 import com.primo.dto.response.LoginResponse;
 import com.primo.exception.BadRequestException;
@@ -18,18 +16,13 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
 
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
-    private final ClienteService clienteService;
-    private final PrestadorServicoService prestadorServicoService;
     private final PessoaService pessoaService;
 
     public AutenticacaoServiceImpl(AuthenticationManager authenticationManager,
                                    TokenService tokenService,
-                                   ClienteService clienteService,
-                                   PrestadorServicoService prestadorServicoService, PessoaService pessoaService) {
+                                   PessoaService pessoaService) {
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
-        this.clienteService = clienteService;
-        this.prestadorServicoService = prestadorServicoService;
         this.pessoaService = pessoaService;
     }
 
@@ -47,14 +40,6 @@ public class AutenticacaoServiceImpl implements AutenticacaoService {
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao realizar o login!", "Login: " + request.login(), e.getMessage(), this);
         }
-    }
-
-    public void cadastrarCliente(CadastroClienteRequest request) {
-        clienteService.cadastrar(request);
-    }
-
-    public void cadastrarPrestador(CadastroPrestadorRequest request) {
-        prestadorServicoService.cadastrar(request);
     }
 
 }

@@ -26,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             validationUtil.validarCampoVazio(login, "Login");
             return usuarioRepository.findByLogin(login);
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao buscar o usuário pelo login! - " + e.getMessage());
+            throw new BadRequestException("Falha ao validar antes de buscar o usuário pelo login! - " + e.getMessage());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar o usuário pelo login: " + login + "! - " + e.getMessage());
         }

@@ -19,7 +19,6 @@ public class ManipuladorGlobalException extends ResponseEntityExceptionHandler {
     @ExceptionHandler({BadRequestException.class})
     private ResponseEntity<MensagemErroAPI> retornarBadRequestException(BadRequestException excecao) {
         loggerUtil.error(excecao.getMensagemErro(), excecao.getObjetoErro());
-
         MensagemErroAPI mensagemAPI = new MensagemErroAPI(400, HttpStatus.BAD_REQUEST, excecao.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensagemAPI);
     }
@@ -27,15 +26,20 @@ public class ManipuladorGlobalException extends ResponseEntityExceptionHandler {
     @ExceptionHandler({NotFoundException.class})
     private ResponseEntity<MensagemErroAPI> retornarNotFoundException(NotFoundException excecao) {
         loggerUtil.error(excecao.getMensagemErro(), excecao.getObjetoErro());
-
         MensagemErroAPI mensagemAPI = new MensagemErroAPI(404, HttpStatus.NOT_FOUND, excecao.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mensagemAPI);
+    }
+
+    @ExceptionHandler({ConflictException.class})
+    private ResponseEntity<MensagemErroAPI> retornarConflictException(ConflictException excecao) {
+        loggerUtil.error(excecao.getMensagemErro(), excecao.getObjetoErro());
+        MensagemErroAPI mensagemAPI = new MensagemErroAPI(409, HttpStatus.CONFLICT, excecao.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(mensagemAPI);
     }
 
     @ExceptionHandler({InternalServerErrorException.class})
     private ResponseEntity<MensagemErroAPI> retornarInternalServerErrorException(InternalServerErrorException excecao) {
         loggerUtil.error(excecao.getMensagemErro(), excecao.getDetalheErro(), excecao.getErro(), excecao.getObjetoErro());
-
         MensagemErroAPI mensagemAPI = new MensagemErroAPI(500, HttpStatus.INTERNAL_SERVER_ERROR, excecao.getMensagemErro());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensagemAPI);
     }
@@ -44,7 +48,6 @@ public class ManipuladorGlobalException extends ResponseEntityExceptionHandler {
     private ResponseEntity<MensagemErroAPI> retornarErroInesperado(Exception excecao) {
         final String mensagem = "Ocorreu um erro inesperado no sistema! Contate o administrador.";
         loggerUtil.error(mensagem, null, excecao.getMessage(), excecao.getClass());
-
         MensagemErroAPI mensagemAPI = new MensagemErroAPI(500, HttpStatus.INTERNAL_SERVER_ERROR, mensagem);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensagemAPI);
     }

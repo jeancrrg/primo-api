@@ -1,5 +1,7 @@
 package com.primo.controller;
 
+import com.primo.dto.request.AvatarRequest;
+import com.primo.dto.request.PrestadorRequest;
 import com.primo.dto.PrestadorServicoDTO;
 import com.primo.service.PrestadorServicoService;
 import org.springframework.http.HttpStatus;
@@ -23,14 +25,26 @@ public class PrestadorServicoController {
         return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscar(termoPesquisa));
     }
 
-    @GetMapping("/unico")
-    public ResponseEntity<PrestadorServicoDTO> buscarPeloCodigo(@RequestParam Long codigoPessoa) {
+    @GetMapping("/{codigoPessoa}")
+    public ResponseEntity<PrestadorServicoDTO> buscarPeloCodigo(@PathVariable Long codigoPessoa) {
         return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscarPeloCodigo(codigoPessoa));
     }
 
-    @PutMapping("/avatar")
-    public ResponseEntity<?> atualizarAvatar(@RequestParam Long codigoPessoa, @RequestParam Integer codigoAvatar) {
-        prestadorServicoService.atualizarAvatar(codigoPessoa, codigoAvatar);
+    @PostMapping()
+    public ResponseEntity<?> cadastrar(@RequestBody PrestadorRequest request) {
+        prestadorServicoService.cadastrar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/{codigoPessoa}/avatar")
+    public ResponseEntity<?> atualizarAvatar(@PathVariable Long codigoPessoa,  @RequestBody AvatarRequest avatarRequest) {
+        prestadorServicoService.atualizarAvatar(codigoPessoa, avatarRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/{codigoPessoa}/inativar")
+    public ResponseEntity<?> inativar(@PathVariable Long codigoPessoa) {
+        prestadorServicoService.inativar(codigoPessoa);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

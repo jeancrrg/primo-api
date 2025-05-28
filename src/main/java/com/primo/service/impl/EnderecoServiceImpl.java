@@ -26,11 +26,11 @@ public class EnderecoServiceImpl implements EnderecoService {
     public EnderecoDTO buscarPeloCodigoPessoa(Long codigoPessoa) throws BadRequestException, InternalServerErrorException {
         try {
             if (codigoPessoa == null) {
-                throw new BadRequestException("Falha ao validar ao buscar o endereço! Código não informado!", this);
+                throw new BadRequestException("Código não informado!");
             }
             return enderecoRepository.buscarPeloCodigoPessoa(codigoPessoa);
         } catch (BadRequestException e) {
-            throw e;
+            throw new BadRequestException("Falha ao validar antes de buscar o endereço! " + e.getMessage(), this);
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar o endereço da pessoa: " + codigoPessoa + "! - " + e.getMessage());
         }

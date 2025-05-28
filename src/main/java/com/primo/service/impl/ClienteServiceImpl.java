@@ -1,13 +1,15 @@
 package com.primo.service.impl;
 
+import com.primo.dto.request.AvatarRequest;
 import com.primo.domain.cadastro.Cliente;
 import com.primo.domain.cadastro.Pessoa;
 import com.primo.domain.constant.Constantes;
 import com.primo.domain.enums.PermissaoUsuario;
 import com.primo.domain.enums.TipoPessoa;
-import com.primo.dto.request.CadastroClienteRequest;
+import com.primo.dto.request.ClienteRequest;
 import com.primo.dto.response.ClienteResponse;
 import com.primo.exception.BadRequestException;
+import com.primo.exception.ConflictException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.exception.NotFoundException;
 import com.primo.repository.ClienteRepository;
@@ -59,25 +61,28 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Transactional
-    public void cadastrar(CadastroClienteRequest request) {
+    public void cadastrar(ClienteRequest request) {
         try {
             validarCamposCliente(request);
             final String senhaCriptografada = new BCryptPasswordEncoder().encode(request.senha());
-            final Pessoa pessoa = pessoaService.salvar(request.nome(), null, request.telefone(), request.email(), TipoPessoa.CLIENTE);
+            final Pessoa pessoa = pessoaService.salvar(request.nome(), request.cpf(), request.telefone(), request.email(), TipoPessoa.CLIENTE);
             usuarioService.salvar(pessoa.getCodigo(), request.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
             veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
             clienteRepository.save(new Cliente(pessoa.getCodigo(), Constantes.CODIGO_AVATAR_PADRAO, Boolean.TRUE));
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao validar ao cadastrar o cliente! - " + e.getMessage(), this);
+            throw new BadRequestException("Falha ao validar antes de cadastrar o cliente! - " + e.getMessage(), this);
+        } catch (ConflictException e) {
+            throw new ConflictException(e.getMessage(), this);
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao realizar o cadastro do cliente!", "Nome: " + request.nome(), e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao cadastrar o cliente!", "Nome: " + request.nome(), e.getMessage(), this);
         }
     }
 
-    private void validarCamposCliente(CadastroClienteRequest request) throws BadRequestException {
+    private void validarCamposCliente(ClienteRequest request) throws BadRequestException {
         validationUtil.validarCampoVazio(request, "Informações do cliente");
         validationUtil.validarCampoVazio(request.nome(), "Nome do cliente");
         validationUtil.validarCampoVazio(request.telefone(), "Telefone do cliente");
+        validationUtil.validarCampoVazio(request.cpf(), "CPF do cliente");
         validationUtil.validarCampoVazio(request.email(), "Email do cliente");
         validationUtil.validarCampoVazio(request.senha(), "Senha do cliente");
         validationUtil.validarCampoVazio(request.modeloVeiculo(), "Modelo do veículo do cliente");
@@ -87,20 +92,32 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
-    public void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar) {
+    public void atualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest) {
         try {
-            validarCamposAntesAtualizarAvatar(codigoPessoa, codigoAvatar);
-            clienteRepository.atualizarAvatar(codigoPessoa, codigoAvatar);
+            validarCamposAntesAtualizarAvatar(codigoPessoa, avatarRequest);
+            clienteRepository.atualizarAvatar(codigoPessoa, avatarRequest.codigo());
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de atualizar o avatar do cliente! - " + e.getMessage(), this);
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao atualizar o avatar do cliente!", "Código: " + codigoPessoa + " Código do avatar: " + codigoAvatar, e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao atualizar o avatar do cliente!", "Código: " + codigoPessoa + " Código do avatar: " + avatarRequest.codigo(), e.getMessage(), this);
         }
     }
 
-    private void validarCamposAntesAtualizarAvatar(Long codigoPessoa, Integer codigoAvatar) throws BadRequestException {
+    private void validarCamposAntesAtualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest) throws BadRequestException {
         validationUtil.validarCampoVazio(codigoPessoa, "Código do cliente");
-        validationUtil.validarCampoVazio(codigoAvatar, "Código do avatar");
+        validationUtil.validarCampoVazio(avatarRequest, "Avatar");
+        validationUtil.validarCampoVazio(avatarRequest.codigo(), "Código do avatar");
+    }
+
+    public void inativar(Long codigoPessoa) {
+        try {
+            validationUtil.validarCampoVazio(codigoPessoa, "Código do cliente");
+            clienteRepository.inativar(codigoPessoa);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de inativar o cliente! - " + e.getMessage(), this);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao inativar o cliente!", "Código: " + codigoPessoa, e.getMessage(), this);
+        }
     }
 
 }

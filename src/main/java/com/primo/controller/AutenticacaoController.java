@@ -1,7 +1,5 @@
 package com.primo.controller;
 
-import com.primo.dto.request.CadastroClienteRequest;
-import com.primo.dto.request.CadastroPrestadorRequest;
 import com.primo.dto.request.LoginRequest;
 import com.primo.dto.response.LoginResponse;
 import com.primo.service.AutenticacaoService;
@@ -22,18 +20,6 @@ public class AutenticacaoController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> realizarLogin(@RequestBody LoginRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(autenticacaoService.realizarLogin(request));
-    }
-
-    @PostMapping("/cadastro/cliente")
-    public ResponseEntity<?> cadastrarCliente(@RequestBody CadastroClienteRequest request) {
-        autenticacaoService.cadastrarCliente(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @PostMapping("/cadastro/prestador")
-    public ResponseEntity<?> cadastrarPrestador(@RequestBody CadastroPrestadorRequest request) {
-        autenticacaoService.cadastrarPrestador(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

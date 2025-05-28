@@ -3,6 +3,7 @@ package com.primo.service.impl;
 import com.primo.domain.cadastro.Pessoa;
 import com.primo.domain.enums.TipoPessoa;
 import com.primo.exception.BadRequestException;
+import com.primo.exception.ConflictException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.PessoaRepository;
 import com.primo.service.PessoaService;
@@ -36,9 +37,12 @@ public class PessoaServiceImpl implements PessoaService {
         }
     }
 
-    public Pessoa salvar(String nome, String cpfCnpj, String telefone, String email, TipoPessoa tipoPessoa) throws BadRequestException, InternalServerErrorException {
+    public Pessoa salvar(String nome, String cpfCnpj, String telefone, String email, TipoPessoa tipoPessoa) throws BadRequestException, ConflictException, InternalServerErrorException {
         try {
-            validarCamposObrigatoriosPessoa(nome, telefone, email);
+            validarCamposObrigatoriosPessoa(nome, cpfCnpj, telefone, email);
+            if (pessoaRepository.existsByCpfCnpj(formatterUtil.removerCaracteresNaoNumericos(cpfCnpj))) {
+                throw new ConflictException("Já possui cadastro do CPF/CNPJ: " + cpfCnpj + "!");
+            }
             final Pessoa pessoa = Pessoa.builder()
                     .nome(formatterUtil.removerAcentos(nome).trim().toUpperCase())
                     .cpfCnpj(cpfCnpj)
@@ -49,14 +53,17 @@ public class PessoaServiceImpl implements PessoaService {
                     .build();
             return pessoaRepository.save(pessoa);
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao validar ao salvar a pessoa! - " + e.getMessage(), this);
+            throw new BadRequestException("Falha ao validar antes de salvar a pessoa! - " + e.getMessage(), this);
+        } catch (ConflictException e) {
+            throw new ConflictException(e.getMessage());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao salvar a pessoa!", "Nome: " + nome, e.getMessage(), this);
         }
     }
 
-    private void validarCamposObrigatoriosPessoa(String nome, String telefone, String email) throws BadRequestException {
+    private void validarCamposObrigatoriosPessoa(String nome, String cpfCnpj, String telefone, String email) throws BadRequestException {
         validationUtil.validarCampoVazio(nome, "Nome da pessoa");
+        validationUtil.validarCampoVazio(cpfCnpj, "CPF/CNPJ da pessoa");
         validationUtil.validarCampoVazio(telefone, "Telefone da pessoa");
         validationUtil.validarCampoVazio(email, "email da pessoa");
     }

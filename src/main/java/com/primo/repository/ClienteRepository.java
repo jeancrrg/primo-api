@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("""
-            SELECT new com.primo.dto.response.ClienteResponse(cli.codigoPessoa, pes.nome, pes.telefone, pes.email, vcl.modelo, vcl.ano, cli.codigoAvatar)
+            SELECT new com.primo.dto.response.ClienteResponse(cli.codigoPessoa, pes.nome, pes.telefone, pes.email, pes.cpfCnpj, vcl.modelo, vcl.ano, cli.codigoAvatar)
               FROM Cliente cli
              INNER JOIN Usuario usr ON usr.codigoPessoa = cli.codigoPessoa
              INNER JOIN Pessoa pes ON pes.codigo = cli.codigoPessoa
@@ -30,5 +30,14 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
              WHERE cli.codigoPessoa = :codigoPessoa
     """)
     void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar);
+
+    @Transactional
+    @Modifying
+    @Query("""
+            UPDATE Cliente cli
+               SET cli.indicadorAtivo = false
+             WHERE cli.codigoPessoa = :codigoPessoa
+    """)
+    void inativar(Long codigoPessoa);
 
 }

@@ -54,4 +54,13 @@ public interface PrestadorServicoRepository extends JpaRepository<PrestadorServi
     """)
     void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar);
 
+    @Transactional
+    @Modifying
+    @Query("""
+            UPDATE Cliente cli
+               SET cli.indicadorAtivo = false
+             WHERE cli.codigoPessoa = :codigoPessoa
+    """)
+    void inativar(Long codigoPessoa);
+
 }

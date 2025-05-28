@@ -7,4 +7,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     Pessoa findByCodigo(Long codigo);
 
+    boolean existsByCpfCnpj(String cpfCnpj);
+
 }

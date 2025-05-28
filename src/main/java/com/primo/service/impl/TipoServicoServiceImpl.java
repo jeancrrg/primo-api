@@ -42,7 +42,7 @@ public class TipoServicoServiceImpl implements TipoServicoService {
             validationUtil.validarCampoVazio(codigo, "Código do tipo do serviço");
             return tipoServicoRepository.findByCodigo(codigo);
         } catch (BadRequestException e) {
-            throw new BadRequestException("Falha ao buscar o tipo de serviço pelo código! - " + e.getMessage());
+            throw new BadRequestException("Falha ao validar antes de buscar o tipo de serviço pelo código! - " + e.getMessage());
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao buscar o tipo de serviço: " + codigo + "! - " + e.getMessage());
         }

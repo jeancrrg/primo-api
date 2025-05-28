@@ -17,4 +17,8 @@ public class FormatterUtil {
         return textoFormatado.replaceAll("[^\\p{ASCII}]", "");
     }
 
+    public String removerCaracteresNaoNumericos(String texto) {
+        return texto.replaceAll("\\D", "");
+    }
+
 }

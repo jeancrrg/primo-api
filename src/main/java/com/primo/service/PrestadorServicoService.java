@@ -1,7 +1,8 @@
 package com.primo.service;
 
+import com.primo.dto.request.AvatarRequest;
 import com.primo.dto.PrestadorServicoDTO;
-import com.primo.dto.request.CadastroPrestadorRequest;
+import com.primo.dto.request.PrestadorRequest;
 
 import java.util.List;
 
@@ -11,8 +12,10 @@ public interface PrestadorServicoService {
 
     PrestadorServicoDTO buscarPeloCodigo(Long codigoPessa);
 
-    void cadastrar(CadastroPrestadorRequest request);
+    void cadastrar(PrestadorRequest request);
 
-    void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar);
+    void atualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest);
+
+    void inativar(Long codigoPessoa);
 
 }
