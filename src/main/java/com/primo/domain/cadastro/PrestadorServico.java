@@ -33,4 +33,7 @@ public class PrestadorServico {
     @Column(name = "INDATV")
     private Boolean indicadorAtivo;
 
+    @Column(name = "INDONL")
+    private Boolean indicadorOnline;
+
 }

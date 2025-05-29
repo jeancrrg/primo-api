@@ -135,6 +135,7 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
                     .valorServico(valorServico)
                     .codigoAvatar(Constantes.CODIGO_AVATAR_PADRAO)
                     .indicadorAtivo(Boolean.TRUE)
+                    .indicadorOnline(Boolean.FALSE)
                     .build();
             prestadorServicoRepository.save(prestadorServico);
         } catch (NotFoundException e) {
