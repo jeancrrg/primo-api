@@ -5,7 +5,7 @@ import com.primo.dto.request.LoginRequest;
 import com.primo.dto.response.LoginResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
-import com.primo.security.TokenService;
+import com.primo.config.security.TokenService;
 import com.primo.service.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

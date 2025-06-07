@@ -1,4 +1,4 @@
-package com.primo.security;
+package com.primo.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

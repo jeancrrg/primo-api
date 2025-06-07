@@ -1,4 +1,4 @@
-package com.primo.security;
+package com.primo.config.security;
 
 import com.primo.service.UsuarioService;
 import jakarta.servlet.FilterChain;

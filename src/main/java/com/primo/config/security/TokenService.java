@@ -1,4 +1,4 @@
-package com.primo.security;
+package com.primo.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
