@@ -14,22 +14,22 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class FiltroSeguranca extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final UsuarioService usuarioService;
 
-    public FiltroSeguranca(TokenService tokenService, UsuarioService usuarioService) {
+    public JwtAuthenticationFilter(TokenService tokenService, UsuarioService usuarioService) {
         this.tokenService = tokenService;
         this.usuarioService = usuarioService;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Ignorar as requisições WebSocket (handshake)
+        // Ignora as requisições WebSocket (handshake)
         String upgradeHeader = request.getHeader("Upgrade");
         if (upgradeHeader != null && upgradeHeader.equalsIgnoreCase("websocket")) {
-            filterChain.doFilter(request, response); // libera o handshake direto, sem validar token
+            filterChain.doFilter(request, response);
             return;
         }
 

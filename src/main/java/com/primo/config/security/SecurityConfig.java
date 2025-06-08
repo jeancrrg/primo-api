@@ -15,12 +15,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SegurancaConfig {
+public class SecurityConfig {
 
-    private final FiltroSeguranca filtroSeguranca;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SegurancaConfig(FiltroSeguranca filtroSeguranca) {
-        this.filtroSeguranca = filtroSeguranca;
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -29,12 +29,12 @@ public class SegurancaConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Filtra antes de verificar quais APIs são autorizadas
-                .addFilterBefore(filtroSeguranca, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 // Quais APIs são autorizadas
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/autenticacoes/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticacoes/cadastro/cliente").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/autenticacoes/cadastro/prestador").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/clientes").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/prestadores-servico").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tipos-servico").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ws/prestador/**").permitAll()
                         .anyRequest().authenticated()

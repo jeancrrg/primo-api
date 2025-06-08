@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 public class SolicitacaoServico {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CODSLC")
     private Long codigo;
 

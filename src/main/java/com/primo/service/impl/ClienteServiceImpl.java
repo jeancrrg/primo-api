@@ -74,7 +74,7 @@ public class ClienteServiceImpl implements ClienteService {
         } catch (ConflictException e) {
             throw new ConflictException(e.getMessage(), this);
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao cadastrar o cliente!", "Nome: " + request.nome(), e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao cadastrar o cliente!", "CPF: " + request.cpf(), e.getMessage(), this);
         }
     }
 

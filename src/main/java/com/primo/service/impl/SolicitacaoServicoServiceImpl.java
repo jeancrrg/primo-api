@@ -44,7 +44,7 @@ public class SolicitacaoServicoServiceImpl implements SolicitacaoServicoService 
                             .status(StatusSolicitacao.PENDENTE)
                             .build();
 
-            solicitacaoServicoRepository.save(solicitacaoServico);
+            //solicitacaoServicoRepository.save(solicitacaoServico);
             prestadorWebSocketHandler.enviarSolicitacao(solicitacaoServicoRequest.codigoPrestador(), "");
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de enviar a solicitação! - " + e.getMessage(), this);
