@@ -26,6 +26,13 @@ public class FiltroSeguranca extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Ignorar as requisições WebSocket (handshake)
+        String upgradeHeader = request.getHeader("Upgrade");
+        if (upgradeHeader != null && upgradeHeader.equalsIgnoreCase("websocket")) {
+            filterChain.doFilter(request, response); // libera o handshake direto, sem validar token
+            return;
+        }
+
         try {
             var token = recuperarToken(request);
             if (token != null) {

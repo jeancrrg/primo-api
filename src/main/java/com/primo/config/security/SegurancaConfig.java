@@ -36,6 +36,7 @@ public class SegurancaConfig {
                         .requestMatchers(HttpMethod.POST, "/autenticacoes/cadastro/cliente").permitAll()
                         .requestMatchers(HttpMethod.POST, "/autenticacoes/cadastro/prestador").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tipos-servico").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ws/prestador/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();
