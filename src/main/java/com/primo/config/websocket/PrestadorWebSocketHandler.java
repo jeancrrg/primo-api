@@ -1,5 +1,7 @@
 package com.primo.config.websocket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.primo.dto.InformacaoClienteDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -33,9 +35,11 @@ public class PrestadorWebSocketHandler extends TextWebSocketHandler {
         sessions.values().removeIf(s -> s.getId().equals(session.getId()));
     }
 
-    public void enviarSolicitacao(Long codigoPrestador, String payload) throws IOException {
+    public void enviarSolicitacao(Long codigoPrestador, InformacaoClienteDTO informacaoClienteDTO) throws IOException {
         WebSocketSession session = sessions.get(codigoPrestador);
         if (session != null && session.isOpen()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String payload = objectMapper.writeValueAsString(informacaoClienteDTO);
             session.sendMessage(new TextMessage(payload));
         }
     }

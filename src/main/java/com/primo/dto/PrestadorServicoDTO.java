@@ -14,10 +14,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrestadorServicoDTO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class PrestadorServicoDTO {
 
     private Long codigo;
     private String nome;

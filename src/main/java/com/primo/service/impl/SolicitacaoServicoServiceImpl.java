@@ -3,11 +3,14 @@ package com.primo.service.impl;
 import com.primo.config.websocket.PrestadorWebSocketHandler;
 import com.primo.domain.cadastro.SolicitacaoServico;
 import com.primo.domain.enums.StatusSolicitacao;
+import com.primo.dto.InformacaoClienteDTO;
 import com.primo.dto.PrestadorServicoDTO;
 import com.primo.dto.request.SolicitacaoServicoRequest;
+import com.primo.dto.response.ClienteResponse;
 import com.primo.exception.BadRequestException;
 import com.primo.exception.InternalServerErrorException;
 import com.primo.repository.SolicitacaoServicoRepository;
+import com.primo.service.ClienteService;
 import com.primo.service.PrestadorServicoService;
 import com.primo.service.SolicitacaoServicoService;
 import com.primo.util.ValidationUtil;
@@ -22,20 +25,30 @@ public class SolicitacaoServicoServiceImpl implements SolicitacaoServicoService 
     private final PrestadorWebSocketHandler prestadorWebSocketHandler;
     private final ValidationUtil validationUtil;
     private final PrestadorServicoService prestadorServicoService;
+    private final ClienteService clienteService;
 
     public SolicitacaoServicoServiceImpl(SolicitacaoServicoRepository solicitacaoServicoRepository,
                                          PrestadorWebSocketHandler prestadorWebSocketHandler,
                                          ValidationUtil validationUtil,
-                                         PrestadorServicoService prestadorServicoService) {
+                                         PrestadorServicoService prestadorServicoService,
+                                         ClienteService clienteService) {
         this.solicitacaoServicoRepository = solicitacaoServicoRepository;
         this.prestadorWebSocketHandler = prestadorWebSocketHandler;
         this.validationUtil = validationUtil;
         this.prestadorServicoService = prestadorServicoService;
+        this.clienteService = clienteService;
     }
 
     public void enviarSolicitacao(SolicitacaoServicoRequest solicitacaoServicoRequest) {
         try {
             validarAntesEnviarSolicitacao(solicitacaoServicoRequest);
+
+            final ClienteResponse clienteResponse = clienteService.buscar(solicitacaoServicoRequest.codigoCliente());
+            final var informacaoClienteDTO = InformacaoClienteDTO.builder()
+                            .codigo(clienteResponse.codigo())
+                            .nome(clienteResponse.nome())
+                            .codigoAvatar(clienteResponse.codigoAvatar())
+                            .build();
 
             final var solicitacaoServico = SolicitacaoServico.builder()
                             .codigoCliente(solicitacaoServicoRequest.codigoCliente())
@@ -44,8 +57,8 @@ public class SolicitacaoServicoServiceImpl implements SolicitacaoServicoService 
                             .status(StatusSolicitacao.PENDENTE)
                             .build();
 
-            //solicitacaoServicoRepository.save(solicitacaoServico);
-            prestadorWebSocketHandler.enviarSolicitacao(solicitacaoServicoRequest.codigoPrestador(), "");
+            solicitacaoServicoRepository.save(solicitacaoServico);
+            prestadorWebSocketHandler.enviarSolicitacao(solicitacaoServicoRequest.codigoPrestador(), informacaoClienteDTO);
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de enviar a solicitação! - " + e.getMessage(), this);
         } catch (Exception e) {
