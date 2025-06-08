@@ -25,26 +25,26 @@ public class PrestadorServicoController {
         return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscar(termoPesquisa));
     }
 
-    @GetMapping("/{codigoPessoa}")
-    public ResponseEntity<PrestadorServicoDTO> buscarPeloCodigo(@PathVariable Long codigoPessoa) {
-        return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscarPeloCodigo(codigoPessoa));
+    @GetMapping("/{codigo}")
+    public ResponseEntity<PrestadorServicoDTO> buscarPeloCodigo(@PathVariable Long codigo) {
+        return ResponseEntity.status(HttpStatus.OK).body(prestadorServicoService.buscarPeloCodigo(codigo));
     }
 
     @PostMapping()
-    public ResponseEntity<?> cadastrar(@RequestBody PrestadorRequest request) {
-        prestadorServicoService.cadastrar(request);
+    public ResponseEntity<?> cadastrar(@RequestBody PrestadorRequest prestadorRequest) {
+        prestadorServicoService.cadastrar(prestadorRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{codigoPessoa}/avatar")
-    public ResponseEntity<?> atualizarAvatar(@PathVariable Long codigoPessoa,  @RequestBody AvatarRequest avatarRequest) {
-        prestadorServicoService.atualizarAvatar(codigoPessoa, avatarRequest);
+    @PutMapping("/{codigo}/avatar")
+    public ResponseEntity<?> atualizarAvatar(@PathVariable Long codigo,  @RequestBody AvatarRequest avatarRequest) {
+        prestadorServicoService.atualizarAvatar(codigo, avatarRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("/{codigoPessoa}/inativar")
-    public ResponseEntity<?> inativar(@PathVariable Long codigoPessoa) {
-        prestadorServicoService.inativar(codigoPessoa);
+    @PutMapping("/{codigo}/inativar")
+    public ResponseEntity<?> inativar(@PathVariable Long codigo) {
+        prestadorServicoService.inativar(codigo);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

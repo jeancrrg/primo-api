@@ -10,12 +10,12 @@ public interface PrestadorServicoService {
 
     List<PrestadorServicoDTO> buscar(String termoPesquisa);
 
-    PrestadorServicoDTO buscarPeloCodigo(Long codigoPessa);
+    PrestadorServicoDTO buscarPeloCodigo(Long codigo);
 
     void cadastrar(PrestadorRequest request);
 
-    void atualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest);
+    void atualizarAvatar(Long codigo, AvatarRequest avatarRequest);
 
-    void inativar(Long codigoPessoa);
+    void inativar(Long codigo);
 
 }

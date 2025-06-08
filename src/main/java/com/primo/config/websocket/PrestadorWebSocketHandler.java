@@ -1,7 +1,5 @@
 package com.primo.config.websocket;
 
-import com.primo.util.LoggerUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -17,19 +15,14 @@ public class PrestadorWebSocketHandler extends TextWebSocketHandler {
 
     private final Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
-    @Autowired
-    private LoggerUtil loggerUtil;
-
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        Long prestadorId = Long.valueOf(session.getUri()
-                .getPath()
-                .split("/ws/prestador/")[1]);
-        sessions.put(prestadorId, session);
+        Long codigoPrestador = Long.valueOf(session.getUri().getPath().split("/ws/prestador/")[1]);
+        sessions.put(codigoPrestador, session);
     }
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+    public void handleTextMessage(WebSocketSession session, TextMessage message) {
         String payload = message.getPayload();
         // Aqui você pode tratar respostas dos prestadores (ex: aceitar/recusar serviço)
         System.out.println("Mensagem recebida do prestador: " + payload);
@@ -40,15 +33,12 @@ public class PrestadorWebSocketHandler extends TextWebSocketHandler {
         sessions.values().removeIf(s -> s.getId().equals(session.getId()));
     }
 
-    public void enviarSolicitacao(Long prestadorId, String payload) throws IOException {
-        try {
-            WebSocketSession session = sessions.get(prestadorId);
-            if (session != null && session.isOpen()) {
-                session.sendMessage(new TextMessage(payload));
-            }
-        } catch (Exception e) {
-            loggerUtil.error("Erro ao enviar solicitação!", this);
+    public void enviarSolicitacao(Long codigoPrestador, String payload) throws IOException {
+        WebSocketSession session = sessions.get(codigoPrestador);
+        if (session != null && session.isOpen()) {
+            session.sendMessage(new TextMessage(payload));
         }
     }
+
 }
 

@@ -72,10 +72,10 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         }
     }
 
-    public PrestadorServicoDTO buscarPeloCodigo(Long codigoPessoa) {
+    public PrestadorServicoDTO buscarPeloCodigo(Long codigo) {
         try {
-            validationUtil.validarCampoVazio(codigoPessoa, "Código");
-            var prestadorServicoDTO = prestadorServicoRepository.buscarPeloCodigo(codigoPessoa);
+            validationUtil.validarCampoVazio(codigo, "Código");
+            var prestadorServicoDTO = prestadorServicoRepository.buscarPeloCodigo(codigo);
             if (prestadorServicoDTO == null) {
                 throw new NotFoundException("Nenhum prestador de serviço encontrado pelo código!", this);
             }
@@ -86,7 +86,7 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         } catch (NotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao buscar o prestador de serviço!", "Código: " + codigoPessoa, e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao buscar o prestador de serviço!", "Código: " + codigo, e.getMessage(), this);
         }
     }
 
@@ -123,14 +123,14 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         }
     }
 
-    private void salvarPrestadorServico(Long codigoPessoa, Integer codigoTipoServico, BigDecimal valorServico) throws BadRequestException, NotFoundException, InternalServerErrorException {
+    private void salvarPrestadorServico(Long codigo, Integer codigoTipoServico, BigDecimal valorServico) throws BadRequestException, NotFoundException, InternalServerErrorException {
         try {
             final TipoServico tipoServico = tipoServicoService.buscarPeloCodigo(codigoTipoServico);
             if (tipoServico == null) {
                 throw new NotFoundException("Falha ao salvar o prestador de serviço! Nenhum tipo de serviço encontrado com o código: " + codigoTipoServico, this);
             }
             final var prestadorServico = PrestadorServico.builder()
-                    .codigoPessoa(codigoPessoa)
+                    .codigo(codigo)
                     .tipoServico(tipoServico)
                     .valorServico(valorServico)
                     .codigoAvatar(Constantes.CODIGO_AVATAR_PADRAO)
@@ -143,35 +143,35 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de salvar o prestador de serviço! - " + e.getMessage());
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao salvar o prestador de serviço com código de pessoa: " + codigoPessoa + "! - " + e.getMessage());
+            throw new InternalServerErrorException("Erro ao salvar o prestador de serviço: " + codigo + "! - " + e.getMessage());
         }
     }
 
-    public void atualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest) {
+    public void atualizarAvatar(Long codigo, AvatarRequest avatarRequest) {
         try {
-            validarCamposAntesAtualizarAvatar(codigoPessoa, avatarRequest);
-            prestadorServicoRepository.atualizarAvatar(codigoPessoa, avatarRequest.codigo());
+            validarCamposAntesAtualizarAvatar(codigo, avatarRequest);
+            prestadorServicoRepository.atualizarAvatar(codigo, avatarRequest.codigo());
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de atualizar o avatar do prestador de serviço! - " + e.getMessage(), this);
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao atualizar o avatar do prestador de serviço!", "Código: " + codigoPessoa + " Código do avatar: " + avatarRequest.codigo(), e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao atualizar o avatar do prestador de serviço!", "Código: " + codigo + " Código do avatar: " + avatarRequest.codigo(), e.getMessage(), this);
         }
     }
 
-    private void validarCamposAntesAtualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest) throws BadRequestException {
-        validationUtil.validarCampoVazio(codigoPessoa, "Código do prestador de serviço");
+    private void validarCamposAntesAtualizarAvatar(Long codigo, AvatarRequest avatarRequest) throws BadRequestException {
+        validationUtil.validarCampoVazio(codigo, "Código do prestador de serviço");
         validationUtil.validarCampoVazio(avatarRequest, "Avatar");
         validationUtil.validarCampoVazio(avatarRequest.codigo(), "Código do avatar");
     }
 
-    public void inativar(Long codigoPessoa) {
+    public void inativar(Long codigo) {
         try {
-            validationUtil.validarCampoVazio(codigoPessoa, "Código do prestador de serviço");
-            prestadorServicoRepository.inativar(codigoPessoa);
+            validationUtil.validarCampoVazio(codigo, "Código do prestador de serviço");
+            prestadorServicoRepository.inativar(codigo);
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de inativar o prestador de serviço! - " + e.getMessage(), this);
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao inativar o prestador de serviço!", "Código: " + codigoPessoa, e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao inativar o prestador de serviço!", "Código: " + codigo, e.getMessage(), this);
         }
     }
 

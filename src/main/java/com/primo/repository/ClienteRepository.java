@@ -10,34 +10,34 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query("""
-            SELECT new com.primo.dto.response.ClienteResponse(cli.codigoPessoa, pes.nome, pes.telefone, pes.email, pes.cpfCnpj, vcl.modelo, vcl.ano, cli.codigoAvatar)
+            SELECT new com.primo.dto.response.ClienteResponse(cli.codigo, pes.nome, pes.telefone, pes.email, pes.cpfCnpj, vcl.modelo, vcl.ano, cli.codigoAvatar)
               FROM Cliente cli
-             INNER JOIN Usuario usr ON usr.codigoPessoa = cli.codigoPessoa
-             INNER JOIN Pessoa pes ON pes.codigo = cli.codigoPessoa
+             INNER JOIN Usuario usr ON usr.codigoPessoa = cli.codigo
+             INNER JOIN Pessoa pes ON pes.codigo = cli.codigo
              INNER JOIN Veiculo vcl ON vcl.codigoPessoa = pes.codigo
              WHERE 1=1
                AND usr.indicadorAtivo = true
                AND cli.indicadorAtivo = true
-               AND cli.codigoPessoa = :codigoPessoa
+               AND cli.codigo = :codigo
     """)
-    ClienteResponse buscar(Long codigoPessoa);
+    ClienteResponse buscar(Long codigo);
 
     @Transactional
     @Modifying
     @Query("""
             UPDATE Cliente cli
                SET cli.codigoAvatar = :codigoAvatar
-             WHERE cli.codigoPessoa = :codigoPessoa
+             WHERE cli.codigo = :codigo
     """)
-    void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar);
+    void atualizarAvatar(Long codigo, Integer codigoAvatar);
 
     @Transactional
     @Modifying
     @Query("""
             UPDATE Cliente cli
                SET cli.indicadorAtivo = false
-             WHERE cli.codigoPessoa = :codigoPessoa
+             WHERE cli.codigo = :codigo
     """)
-    void inativar(Long codigoPessoa);
+    void inativar(Long codigo);
 
 }

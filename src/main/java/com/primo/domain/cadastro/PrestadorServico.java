@@ -18,7 +18,7 @@ public class PrestadorServico {
 
     @Id
     @Column(name = "CODPES")
-    private Long codigoPessoa;
+    private Long codigo;
 
     @ManyToOne
     @JoinColumn(name = "CODTIPSRV", referencedColumnName = "CODTIPSRV")
@@ -30,10 +30,10 @@ public class PrestadorServico {
     @Column(name = "CODAVA")
     private Integer codigoAvatar;
 
-    @Column(name = "INDATV")
-    private Boolean indicadorAtivo;
-
     @Column(name = "INDONL")
     private Boolean indicadorOnline;
+
+    @Column(name = "INDATV")
+    private Boolean indicadorAtivo;
 
 }

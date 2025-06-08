@@ -6,12 +6,12 @@ import com.primo.dto.response.ClienteResponse;
 
 public interface ClienteService {
 
-    ClienteResponse buscar(Long codigoPessoa);
+    ClienteResponse buscar(Long codigo);
 
     void cadastrar(ClienteRequest request);
 
-    void atualizarAvatar(Long codigoPessoa, AvatarRequest avatarRequest);
+    void atualizarAvatar(Long codigo, AvatarRequest avatarRequest);
 
-    void inativar(Long codigoPessoa);
+    void inativar(Long codigo);
 
 }

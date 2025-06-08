@@ -17,7 +17,7 @@ public class Cliente {
 
     @Id
     @Column(name = "CODPES")
-    private Long codigoPessoa;
+    private Long codigo;
 
     @Column(name = "CODAVA")
     private Integer codigoAvatar;

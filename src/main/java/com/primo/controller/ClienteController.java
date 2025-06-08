@@ -18,26 +18,26 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    @GetMapping("/{codigoPessoa}")
-    public ResponseEntity<ClienteResponse> buscar(@PathVariable Long codigoPessoa) {
-        return ResponseEntity.status(HttpStatus.OK).body(clienteService.buscar(codigoPessoa));
+    @GetMapping("/{codigo}")
+    public ResponseEntity<ClienteResponse> buscar(@PathVariable Long codigo) {
+        return ResponseEntity.status(HttpStatus.OK).body(clienteService.buscar(codigo));
     }
 
     @PostMapping()
-    public ResponseEntity<?> cadastrar(@RequestBody ClienteRequest request) {
-        clienteService.cadastrar(request);
+    public ResponseEntity<?> cadastrar(@RequestBody ClienteRequest clienteRequest) {
+        clienteService.cadastrar(clienteRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping("/{codigoPessoa}/avatar")
-    public ResponseEntity<?> atualizarAvatar(@PathVariable Long codigoPessoa, @RequestBody AvatarRequest avatarRequest) {
-        clienteService.atualizarAvatar(codigoPessoa, avatarRequest);
+    @PutMapping("/{codigo}/avatar")
+    public ResponseEntity<?> atualizarAvatar(@PathVariable Long codigo, @RequestBody AvatarRequest avatarRequest) {
+        clienteService.atualizarAvatar(codigo, avatarRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PutMapping("/{codigoPessoa}/inativar")
-    public ResponseEntity<?> inativar(@PathVariable Long codigoPessoa) {
-        clienteService.inativar(codigoPessoa);
+    @PutMapping("/{codigo}/inativar")
+    public ResponseEntity<?> inativar(@PathVariable Long codigo) {
+        clienteService.inativar(codigo);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

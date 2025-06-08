@@ -15,7 +15,7 @@ public interface PrestadorServicoRepository extends JpaRepository<PrestadorServi
             SELECT new com.primo.dto.PrestadorServicoDTO(pes.codigo, pes.nome, pes.telefone, pes.email, pes.cpfCnpj,
                                                             ptd.tipoServico.codigo, ptd.tipoServico.descricao, ptd.valorServico, ptd.codigoAvatar)
              FROM PrestadorServico ptd
-             INNER JOIN Pessoa pes ON pes.codigo = ptd.codigoPessoa
+             INNER JOIN Pessoa pes ON pes.codigo = ptd.codigo
             INNER JOIN Usuario usr ON usr.codigoPessoa = pes.codigo
             WHERE 1=1
               AND usr.indicadorAtivo = true
@@ -32,35 +32,35 @@ public interface PrestadorServicoRepository extends JpaRepository<PrestadorServi
         SELECT new com.primo.dto.PrestadorServicoDTO(pes.codigo, pes.nome, pes.telefone, pes.email, pes.cpfCnpj,
                                                         ptd.tipoServico.codigo, ptd.tipoServico.descricao, ptd.valorServico, ptd.codigoAvatar)
           FROM PrestadorServico ptd
-         INNER JOIN Pessoa pes ON pes.codigo = ptd.codigoPessoa
+         INNER JOIN Pessoa pes ON pes.codigo = ptd.codigo
          INNER JOIN Usuario usr ON usr.codigoPessoa = pes.codigo
          WHERE 1=1
            AND usr.indicadorAtivo = true
            AND ptd.indicadorAtivo = true
-           AND pes.codigo = :codigoPessoa
+           AND pes.codigo = :codigo
            AND EXISTS (SELECT edr
                             FROM Endereco edr
                            WHERE 1=1
                              AND pes.codigo = edr.codigoPessoa)
     """)
-    PrestadorServicoDTO buscarPeloCodigo(Long codigoPessoa);
+    PrestadorServicoDTO buscarPeloCodigo(Long codigo);
 
     @Transactional
     @Modifying
     @Query("""
             UPDATE PrestadorServico ptd
                SET ptd.codigoAvatar = :codigoAvatar
-             WHERE ptd.codigoPessoa = :codigoPessoa
+             WHERE ptd.codigo = :codigo
     """)
-    void atualizarAvatar(Long codigoPessoa, Integer codigoAvatar);
+    void atualizarAvatar(Long codigo, Integer codigoAvatar);
 
     @Transactional
     @Modifying
     @Query("""
             UPDATE Cliente cli
                SET cli.indicadorAtivo = false
-             WHERE cli.codigoPessoa = :codigoPessoa
+             WHERE cli.codigo = :codigo
     """)
-    void inativar(Long codigoPessoa);
+    void inativar(Long codigo);
 
 }
