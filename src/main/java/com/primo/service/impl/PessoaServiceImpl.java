@@ -45,8 +45,8 @@ public class PessoaServiceImpl implements PessoaService {
             }
             final Pessoa pessoa = Pessoa.builder()
                     .nome(formatterUtil.removerAcentos(nome).trim().toUpperCase())
-                    .cpfCnpj(cpfCnpj)
-                    .telefone(telefone)
+                    .cpfCnpj(formatterUtil.removerCaracteresNaoNumericos(cpfCnpj))
+                    .telefone(formatterUtil.removerCaracteresNaoNumericos(telefone))
                     .email(email)
                     .dataCadastro(LocalDateTime.now())
                     .tipoPessoa(tipoPessoa)
