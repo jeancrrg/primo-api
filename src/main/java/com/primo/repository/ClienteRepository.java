@@ -40,4 +40,13 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     """)
     void inativar(Long codigo);
 
+    @Query("""
+        SELECT COUNT(*) > 0
+          FROM Cliente cli
+         WHERE 1=1
+           AND cli.indicadorAtivo = false
+           AND cli.codigo = :codigo
+    """)
+    boolean verificarPossuiCadastroInativo(Long codigo);
+
 }

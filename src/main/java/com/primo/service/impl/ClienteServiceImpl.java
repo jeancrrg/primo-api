@@ -120,4 +120,15 @@ public class ClienteServiceImpl implements ClienteService {
         }
     }
 
+    public boolean verificarPossuiCadastroInativo(Long codigo) {
+        try {
+            validationUtil.validarCampoVazio(codigo, "Código do cliente");
+            return clienteRepository.verificarPossuiCadastroInativo(codigo);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de verificar se possui o cadastro do cliente inativo! - " + e.getMessage(), this);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao verificar se possui o cadastro do cliente inativo!", "Código: " + codigo, e.getMessage(), this);
+        }
+    }
+
 }

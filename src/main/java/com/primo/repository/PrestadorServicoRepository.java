@@ -57,10 +57,19 @@ public interface PrestadorServicoRepository extends JpaRepository<PrestadorServi
     @Transactional
     @Modifying
     @Query("""
-            UPDATE Cliente cli
-               SET cli.indicadorAtivo = false
-             WHERE cli.codigo = :codigo
+            UPDATE PrestadorServico ptd
+               SET ptd.indicadorAtivo = false
+             WHERE ptd.codigo = :codigo
     """)
     void inativar(Long codigo);
+
+    @Query("""
+        SELECT COUNT(*) > 0
+          FROM PrestadorServico ptd
+         WHERE 1=1
+           AND ptd.indicadorAtivo = false
+           AND ptd.codigo = :codigo
+    """)
+    boolean verificarPossuiCadastroInativo(Long codigo);
 
 }

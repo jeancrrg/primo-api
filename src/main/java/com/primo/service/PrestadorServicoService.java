@@ -18,4 +18,6 @@ public interface PrestadorServicoService {
 
     void inativar(Long codigo);
 
+    boolean verificarPossuiCadastroInativo(Long codigo);
+
 }

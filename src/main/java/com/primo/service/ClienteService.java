@@ -14,4 +14,6 @@ public interface ClienteService {
 
     void inativar(Long codigo);
 
+    boolean verificarPossuiCadastroInativo(Long codigo);
+
 }

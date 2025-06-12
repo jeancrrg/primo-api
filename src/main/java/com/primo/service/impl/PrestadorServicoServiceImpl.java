@@ -175,4 +175,15 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
         }
     }
 
+    public boolean verificarPossuiCadastroInativo(Long codigo) {
+        try {
+            validationUtil.validarCampoVazio(codigo, "Código do prestador de serviço");
+            return prestadorServicoRepository.verificarPossuiCadastroInativo(codigo);
+        } catch (BadRequestException e) {
+            throw new BadRequestException("Falha ao validar antes de verificar se possui o cadastro do prestador de serviço inativo! - " + e.getMessage(), this);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Erro ao verificar se possui o cadastro do prestador de serviço inativo!", "Código: " + codigo, e.getMessage(), this);
+        }
+    }
+
 }
