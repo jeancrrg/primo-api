@@ -61,33 +61,33 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Transactional
-    public void cadastrar(ClienteRequest request) {
+    public void cadastrar(ClienteRequest clienteRequest) {
         try {
-            validarCamposCliente(request);
-            final String senhaCriptografada = new BCryptPasswordEncoder().encode(request.senha());
-            final Pessoa pessoa = pessoaService.salvar(request.nome(), request.cpf(), request.telefone(), request.email(), TipoPessoa.CLIENTE);
-            usuarioService.salvar(pessoa.getCodigo(), request.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
-            veiculoService.salvar(pessoa.getCodigo(), request.modeloVeiculo(), request.anoVeiculo());
+            validarCamposCliente(clienteRequest);
+            final String senhaCriptografada = new BCryptPasswordEncoder().encode(clienteRequest.senha());
+            final Pessoa pessoa = pessoaService.salvar(clienteRequest.nome(), clienteRequest.cpf(), clienteRequest.telefone(), clienteRequest.email(), TipoPessoa.CLIENTE);
+            usuarioService.salvar(pessoa.getCodigo(), clienteRequest.email(), senhaCriptografada, PermissaoUsuario.USUARIO);
+            veiculoService.salvar(pessoa.getCodigo(), clienteRequest.modeloVeiculo(), clienteRequest.anoVeiculo());
             clienteRepository.save(new Cliente(pessoa.getCodigo(), Constantes.CODIGO_AVATAR_PADRAO, Boolean.TRUE));
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de cadastrar o cliente! - " + e.getMessage(), this);
         } catch (ConflictException e) {
             throw new ConflictException(e.getMessage(), this);
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao cadastrar o cliente!", "CPF: " + request.cpf(), e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao cadastrar o cliente!", "CPF: " + clienteRequest.cpf(), e.getMessage(), this);
         }
     }
 
-    private void validarCamposCliente(ClienteRequest request) throws BadRequestException {
-        validationUtil.validarCampoVazio(request, "Informações do cliente");
-        validationUtil.validarCampoVazio(request.nome(), "Nome do cliente");
-        validationUtil.validarCampoVazio(request.telefone(), "Telefone do cliente");
-        validationUtil.validarCampoVazio(request.cpf(), "CPF do cliente");
-        validationUtil.validarCampoVazio(request.email(), "Email do cliente");
-        validationUtil.validarCampoVazio(request.senha(), "Senha do cliente");
-        validationUtil.validarCampoVazio(request.modeloVeiculo(), "Modelo do veículo do cliente");
-        validationUtil.validarCampoVazio(request.anoVeiculo(), "Ano do veículo do cliente");
-        if (request.anoVeiculo() <= 1000) {
+    private void validarCamposCliente(ClienteRequest clienteRequest) throws BadRequestException {
+        validationUtil.validarCampoVazio(clienteRequest, "Informações do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.nome(), "Nome do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.telefone(), "Telefone do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.cpf(), "CPF do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.email(), "Email do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.senha(), "Senha do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.modeloVeiculo(), "Modelo do veículo do cliente");
+        validationUtil.validarCampoVazio(clienteRequest.anoVeiculo(), "Ano do veículo do cliente");
+        if (clienteRequest.anoVeiculo() <= 1000) {
             throw new BadRequestException("Ano do veículo inválido!");
         }
     }

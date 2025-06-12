@@ -91,34 +91,34 @@ public class PrestadorServicoServiceImpl implements PrestadorServicoService {
     }
 
     @Transactional
-    public void cadastrar(PrestadorRequest request) {
+    public void cadastrar(PrestadorRequest prestadorRequest) {
         try {
-            validarCamposPrestador(request);
-            final Pessoa pessoa = pessoaService.salvar(request.nome(), request.cnpj(), request.telefone(), request.email(), TipoPessoa.PRESTADOR);
-            final String senha = new BCryptPasswordEncoder().encode(request.senha());
-            usuarioService.salvar(pessoa.getCodigo(), request.email(), senha, PermissaoUsuario.USUARIO);
-            enderecoService.salvar(pessoa.getCodigo(), request.endereco());
-            salvarPrestadorServico(pessoa.getCodigo(), request.codigoTipoServico(), request.valorServico());
+            validarCamposPrestador(prestadorRequest);
+            final Pessoa pessoa = pessoaService.salvar(prestadorRequest.nome(), prestadorRequest.cnpj(), prestadorRequest.telefone(), prestadorRequest.email(), TipoPessoa.PRESTADOR);
+            final String senha = new BCryptPasswordEncoder().encode(prestadorRequest.senha());
+            usuarioService.salvar(pessoa.getCodigo(), prestadorRequest.email(), senha, PermissaoUsuario.USUARIO);
+            enderecoService.salvar(pessoa.getCodigo(), prestadorRequest.endereco());
+            salvarPrestadorServico(pessoa.getCodigo(), prestadorRequest.codigoTipoServico(), prestadorRequest.valorServico());
         } catch (BadRequestException e) {
             throw new BadRequestException("Falha ao validar antes de cadastrar o prestador de serviço! - " + e.getMessage(), this);
         } catch (NotFoundException e) {
             throw e;
         } catch (Exception e) {
-            throw new InternalServerErrorException("Erro ao realizar o cadastro do prestador de serviço!", "Nome: " + request.nome(), e.getMessage(), this);
+            throw new InternalServerErrorException("Erro ao realizar o cadastro do prestador de serviço!", "Nome: " + prestadorRequest.nome(), e.getMessage(), this);
         }
     }
 
-    private void validarCamposPrestador(PrestadorRequest request) throws BadRequestException {
-        validationUtil.validarCampoVazio(request, "Informações do prestador");
-        validationUtil.validarCampoVazio(request.nome(), "Nome do prestador");
-        validationUtil.validarCampoVazio(request.telefone(), "Telefone do prestador");
-        validationUtil.validarCampoVazio(request.email(), "Email do prestador");
-        validationUtil.validarCampoVazio(request.senha(), "Senha do prestador");
-        validationUtil.validarCampoVazio(request.cnpj(), "Cnpj do prestador");
-        validationUtil.validarCampoVazio(request.endereco(), "Endereço do prestador");
-        validationUtil.validarCampoVazio(request.codigoTipoServico(), "Código do tipo do serviço do prestador");
-        validationUtil.validarCampoVazio(request.valorServico(), "Valor do serviço do prestador");
-        if (request.valorServico().compareTo(BigDecimal.ZERO) <= 0) {
+    private void validarCamposPrestador(PrestadorRequest prestadorRequest) throws BadRequestException {
+        validationUtil.validarCampoVazio(prestadorRequest, "Informações do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.nome(), "Nome do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.telefone(), "Telefone do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.email(), "Email do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.senha(), "Senha do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.cnpj(), "Cnpj do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.endereco(), "Endereço do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.codigoTipoServico(), "Código do tipo do serviço do prestador");
+        validationUtil.validarCampoVazio(prestadorRequest.valorServico(), "Valor do serviço do prestador");
+        if (prestadorRequest.valorServico().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("O valor do serviço não pode ser menor ou igual a zero!");
         }
     }
